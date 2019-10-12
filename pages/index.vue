@@ -64,15 +64,13 @@ export default {
       searchValue: "" //搜索框的值
     };
   },
-  mounted() {
-    this.$axios({
-      url: "/scenics/banners",
-      method: "GET"
-    }).then(res => {
-      // console.log(res)
-      const { data } = res.data;
-      this.banners = data;
+  async mounted() {
+    let res = await this.$axios({
+      url: "/scenics/banners"
     });
+
+    const { data } = res.data;
+    this.banners = data;
   },
   methods: {
     // 搜索、
