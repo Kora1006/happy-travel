@@ -11,6 +11,7 @@
           >{{item}}</span>
         </el-row>
         <LoginForm v-if="currentTab === 0" />
+        <RegisterForm v-if="currentTab === 1"/>
       </div>
     </el-row>
   </div>
@@ -18,15 +19,23 @@
 
 <script>
 import LoginForm from "@/components/user/loginForm";
+import RegisterForm from '@/components/user/registerForm'
 export default {
   data() {
     return {
       tabs: ["登录", "注册"],
-      currentTab: 0
+      currentTab: this.$store.state.user.current || 0
     };
   },
+  methods: {
+      handleChangeTab(index){
+          this.currentTab = index
+          this.$store.commit('user/setCurrent',index)
+      }
+  },
   components: {
-    LoginForm
+    LoginForm,
+    RegisterForm
   }
 };
 </script>

@@ -38,7 +38,10 @@
         </el-dropdown>
 
         <!-- 不存在用户信息展示登录注册链接 -->
-        <nuxt-link to="/user/login" class="account-link" v-else>登录 / 注册</nuxt-link>
+        <nuxt-link to="/user/login" class="account-link" v-else>
+        <span @click="handleLog">登录</span>&nbsp;&nbsp;
+         <span @click="handleReg">注册</span>
+        </nuxt-link>
       </el-row>
     </el-row>
   </header>
@@ -49,7 +52,16 @@ export default {
     methods:{
         handleLogout(){
         this.$store.commit('user/clearUserInfo')
+        this.$store.commit('user/setCurrent',0)
         this.$router.push('/user/login')
+        },
+        handleLog(){
+          this.$store.commit('user/setCurrent',0)
+          
+        },
+         handleReg(){
+          
+          this.$store.commit('user/setCurrent',1)
         }
     }
 };
@@ -114,7 +126,7 @@ export default {
   }
 
   .el-dropdown-link {
-    margin-left: 20px;
+    margin-left: 15px;
 
     &:hover {
       img {
@@ -140,7 +152,7 @@ export default {
     margin-left: 10px;
     color: #666;
 
-    &:hover {
+    span:hover {
       color: #409eff;
       text-decoration: underline;
     }
