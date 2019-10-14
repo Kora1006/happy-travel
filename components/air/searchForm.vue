@@ -40,7 +40,15 @@
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
-        <el-date-picker v-model="form.departDate" type="date" placeholder="选择日期" @change="handleDate"></el-date-picker>
+        <el-date-picker
+          v-model="form.departDate"
+          type="date"
+          placeholder="选择日期"
+          @change="handleDate"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item label>
+        <el-button style="width:100%;" type="primary" icon="el-icon-search" @click="handleSubmit">搜索</el-button>
       </el-form-item>
       <div class="reverse">
         <span @click="handleReverse">换</span>
@@ -50,7 +58,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 export default {
   data() {
     return {
@@ -72,6 +80,16 @@ export default {
   methods: {
     handleSearchTab(index) {
       this.current = index;
+    },
+    // 选择返程
+    handleSearchTab(index) {
+      if (index === 1) {
+        this.$confirm("目前暂不支持往返，请使用单程选票！", "提示", {
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          type: "warning"
+        });
+      }
     },
     // 出发城市输入框值发生变化时候会触发
     // value：输入框的值
@@ -122,20 +140,55 @@ export default {
       if (this.newData.length === 0) return;
       this.form[place + "City"] = this.newData[0].value;
       this.form[place + "Code"] = this.newData[0].sort;
+      this.newData = [];
     },
     // 更换出发和到达城市
-    handleReverse(){
-        const{departCity,departCode,destCity,destCode}=this.form
-        this.form.departCode = destCode
-        this.form.departCity = destCity
-        this.form.destCity = departCity
-        this.form.destCode = departCode
+    handleReverse() {
+      const { departCity, departCode, destCity, destCode } = this.form;
+      this.form.departCode = destCode;
+      this.form.departCity = destCity;
+      this.form.destCity = departCity;
+      this.form.destCode = departCode;
     },
     // 更换日期的格式
-    handleDate(value){
-        // console.log(value)
-        this.form.departDate=moment(value).format('YYYY-MM-DD')
-        console.log(this.form.departDate)
+    handleDate(value) {
+      // console.log(value)
+      this.form.departDate = moment(value).format("YYYY-MM-DD");
+      //   console.log(this.form.departDate);
+    },
+    // 搜索机票
+    handleSubmit() {
+      // console.log(this.form)
+      // 先对获取的数据进行验证
+      const rules = {
+        departCity: {
+          message: "请输入出发城市",
+          value: this.form.departCity
+        },
+        destCity: {
+          message: "请输入到达城市",
+          value: this.form.destCity
+        },
+        departDate: {
+          message: "请选择出发时间",
+          value: this.form.departDate
+        }
+      };
+      let valid = true;
+      Object.keys(rules).forEach(v => {
+        if (valid == false) return;
+        const { value, message } = rules[v];
+        if (!value) {
+          this.$message.error(message);
+          valid = false;
+        }
+      });
+
+      // 提交数据
+      this.$router.push({
+        path: "/air/flights",
+        query: this.form
+      });
     }
   }
 };
