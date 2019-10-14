@@ -77,38 +77,39 @@ export default {
     },
    async handleRegSubmit() {
       const {checkPass,...props}=this.form
-      // this.$refs["form"].validate(async valid => {
-      //   if (valid) {
-      //     let res = await this.$axios({
-      //       url: "/accounts/register",
-      //       method: "POST",
-      //       data: props
-      //     });
-      //     if (res.status == 200) {
-      //       const data = res.data;
-      //       //   调用mutations的方法修改state的值
-      //       this.$store.commit("user/setUserInfo", data);
-      //       //    console.log(this.$store.state)
-      //       this.$message.success("登录成功");
-      //       setTimeout(() => {
-      //         this.$router.push('/')
-      //       }, 1500);
-      //     }
-      //   }
-      // });
-      const res = await this.$axios({
-        url:'/accounts/register',
-        method:'POST',
-        data:props
-      })
-      if(res.status === 200){
-        const data = res.data
-        this.$store.commit("user/setUserInfo",data)
-        this.$message.success('注册成功');
-        setTimeout(()=>{
-          this.$router.push('/')
-        },1500)
-      }
+      this.$refs.form.validate(async valid => {
+        console.log(valid)
+        if (valid) {
+          let res = await this.$axios({
+            url: "/accounts/register",
+            method: "POST",
+            data: props
+          });
+          if (res.status === 200) {
+            const data = res.data;
+            //   调用mutations的方法修改state的值
+            this.$store.commit("user/setUserInfo", data);
+            //    console.log(this.$store.state)
+            this.$message.success("登录成功");
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 1500);
+          }
+        }
+      });
+      // const res = await this.$axios({
+      //   url:'/accounts/register',
+      //   method:'POST',
+      //   data:props
+      // })
+      // if(res.status === 200){
+      //   const data = res.data
+      //   this.$store.commit("user/setUserInfo",data)
+      //   this.$message.success('注册成功');
+      //   setTimeout(()=>{
+      //     this.$router.push('/')
+      //   },1500)
+      // }
     }
   }
 };
