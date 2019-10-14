@@ -37,22 +37,15 @@ export default {
   methods: {
     handleLoginSubmit() {
       // 对获取到的数据进行校验
-      this.$refs["form"].validate(async valid => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
-          let res = await this.$axios({
-            url: "/accounts/login",
-            method: "POST",
-            data: this.form
-          });
-          if (res.status == 200) {
-            const data = res.data;
-            //   调用mutations的方法修改state的值
-            this.$store.commit("user/setUserInfo", data);
-            //    console.log(this.$store.state)
-            this.$message.success("登录成功");
-            setTimeout(() => {
+          // this.$store.dispatch用于调运actions的方法
+          const res = await this.$store.dispatch("user/login", this.form);
+          if(res.status ==200){
+            this.$message.success('登录成功');
+            setTimeout(()=>{
               this.$router.push('/')
-            }, 1500);
+            },1500)
           }
         }
       });

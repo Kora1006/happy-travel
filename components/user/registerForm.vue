@@ -75,10 +75,12 @@ export default {
         this.$message.success(`验证码为${code}`);
       }
     },
-   async handleRegSubmit() {
+   handleRegSubmit() {
       const {checkPass,...props}=this.form
+      console.log(this.form)
+      console.log(props)
       this.$refs.form.validate(async valid => {
-        console.log(valid)
+        
         if (valid) {
           let res = await this.$axios({
             url: "/accounts/register",

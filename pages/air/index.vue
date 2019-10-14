@@ -6,10 +6,10 @@
     </h2>
     <!-- 搜索栏 -->
     <el-row type="flex" justify="space-between">
-      <el-col :span="10">
-        <div>搜索部分</div>
+      <el-col>
+        <searchForm/>
       </el-col>
-      <el-col :span="14">
+      <el-col>
         <div class="sale-banner">
           <img src="http://157.122.54.189:9093/images/pic_sale.jpeg" />
         </div>
@@ -43,7 +43,12 @@
 </template>
 
 <script>
-export default {};
+import searchForm from '@/components/air/searchForm'
+export default {
+  components:{
+    searchForm
+  }
+};
 </script>
 
 <style lang="less" scoped>
