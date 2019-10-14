@@ -40,7 +40,7 @@
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
-        <el-date-picker v-model="form.departDate" type="date" placeholder="选择日期"></el-date-picker>
+        <el-date-picker v-model="form.departDate" type="date" placeholder="选择日期" @change="handleDate"></el-date-picker>
       </el-form-item>
       <div class="reverse">
         <span @click="handleReverse">换</span>
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -124,12 +125,17 @@ export default {
     },
     // 更换出发和到达城市
     handleReverse(){
-        let city=this.form.departCity
-        let code = this.form.departCode
-        this.form.departCode = this.form.destCode
-        this.form.departCity = this.form.destCity
-        this.form.destCity = city
-        this.form.destCode = code
+        const{departCity,departCode,destCity,destCode}=this.form
+        this.form.departCode = destCode
+        this.form.departCity = destCity
+        this.form.destCity = departCity
+        this.form.destCode = departCode
+    },
+    // 更换日期的格式
+    handleDate(value){
+        // console.log(value)
+        this.form.departDate=moment(value).format('YYYY-MM-DD')
+        console.log(this.form.departDate)
     }
   }
 };
