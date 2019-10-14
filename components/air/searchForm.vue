@@ -42,6 +42,9 @@
       <el-form-item label="出发时间">
         <el-date-picker v-model="form.departDate" type="date" placeholder="选择日期"></el-date-picker>
       </el-form-item>
+      <div class="reverse">
+        <span @click="handleReverse">换</span>
+      </div>
     </el-form>
   </div>
 </template>
@@ -118,6 +121,15 @@ export default {
       if (this.newData.length === 0) return;
       this.form[place + "City"] = this.newData[0].value;
       this.form[place + "Code"] = this.newData[0].sort;
+    },
+    // 更换出发和到达城市
+    handleReverse(){
+        let city=this.form.departCity
+        let code = this.form.departCode
+        this.form.departCode = this.form.destCode
+        this.form.departCity = this.form.destCity
+        this.form.destCity = city
+        this.form.destCode = code
     }
   }
 };
