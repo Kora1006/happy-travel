@@ -183,6 +183,8 @@ export default {
           valid = false;
         }
       });
+      // 如果信息未输入完就不跳转
+      if(!valid)return;
 
       // 提交数据
       this.$router.push({

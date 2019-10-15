@@ -1,23 +1,23 @@
 <template>
-  <el-form :model="form" ref="form" :rules="rules" class="form">
+  <el-form :model="registForm" ref="registForm" :rules="rules" class="form">
     <el-form-item class="form-item" prop="username">
-      <el-input placeholder="用户名/手机" v-model="form.username"></el-input>
+      <el-input placeholder="用户名/手机" v-model="registForm.username"></el-input>
     </el-form-item>
     <el-form-item class="form-item" prop="captcha">
-      <el-input placeholder="请输入验证码" v-model="form.captcha">
+      <el-input placeholder="请输入验证码" v-model="registForm.captcha">
         <template slot="append">
           <el-button @click="handleSendCaptcha">发送验证码</el-button>
         </template>
       </el-input>
     </el-form-item>
     <el-form-item class="form-item" prop="nickname">
-      <el-input placeholder="昵称" v-model="form.nickname"></el-input>
+      <el-input placeholder="昵称" v-model="registForm.nickname"></el-input>
     </el-form-item>
     <el-form-item class="form-item" prop="password">
-      <el-input placeholder="密码" type="password" v-model="form.password"></el-input>
+      <el-input placeholder="密码" type="password" v-model="registForm.password"></el-input>
     </el-form-item>
     <el-form-item class="form-item" prop="checkPass">
-      <el-input placeholder="确认密码" type="password" v-model="form.checkPass"></el-input>
+      <el-input placeholder="确认密码" type="password" v-model="registForm.checkPass"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button class="submit" type="primary" @click="handleRegSubmit">注册</el-button>
@@ -31,12 +31,15 @@ export default {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.password) {
+      } else if (value !== this.registForm.password) {
         callback(new Error("两次输入密码不一致!"));
+      }else{
+        // 必须设置回调函数，否则该验证一直在执行导致整表无法校验
+        callback();
       }
     };
     return {
-      form: {
+      registForm: {
         username: "",
         nickname: "",
         captcha: "",
@@ -56,11 +59,11 @@ export default {
   },
   methods: {
     async handleSendCaptcha() {
-      if (!this.form.username) {
+      if (!this.registForm.username) {
         this.$message.error("手机号不能为空");
         return;
       }
-      if (this.form.username.length !== 11) {
+      if (this.registForm.username.length !== 11) {
         this.$message.error("手机号必须为11位");
         return;
       }
@@ -68,50 +71,40 @@ export default {
       const res = await this.$axios({
         url: "/captchas",
         method: "POST",
-        data: { tel: this.form.username }
+        data: { tel: this.registForm.username }
       });
       if (res.status === 200) {
         const { code } = res.data;
         this.$message.success(`验证码为${code}`);
       }
     },
-   handleRegSubmit() {
-      const {checkPass,...props}=this.form
-      console.log(this.form)
-      console.log(props)
-      this.$refs.form.validate(async valid => {
-        
+    handleRegSubmit() {
+      const { checkPass, ...props } = this.registForm;
+
+      console.log(this.$refs.registForm);
+      this.$refs.registForm.validate(valid => {
         if (valid) {
-          let res = await this.$axios({
+   
+
+          this.$axios({
             url: "/accounts/register",
             method: "POST",
             data: props
+          }).then(res => {
+            if (res.status === 200) {
+              const data = res.data;
+              //   调用mutations的方法修改state的值
+              this.$store.commit("user/setUserInfo", data);
+              //    console.log(this.$store.state)
+              this.$message.success("登录成功");
+              setTimeout(() => {
+                this.$router.push("/");
+              }, 1500);
+            }
           });
-          if (res.status === 200) {
-            const data = res.data;
-            //   调用mutations的方法修改state的值
-            this.$store.commit("user/setUserInfo", data);
-            //    console.log(this.$store.state)
-            this.$message.success("登录成功");
-            setTimeout(() => {
-              this.$router.push('/')
-            }, 1500);
-          }
         }
       });
-      // const res = await this.$axios({
-      //   url:'/accounts/register',
-      //   method:'POST',
-      //   data:props
-      // })
-      // if(res.status === 200){
-      //   const data = res.data
-      //   this.$store.commit("user/setUserInfo",data)
-      //   this.$message.success('注册成功');
-      //   setTimeout(()=>{
-      //     this.$router.push('/')
-      //   },1500)
-      // }
+     
     }
   }
 };
