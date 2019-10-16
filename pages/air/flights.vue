@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <FlightsFilters :data="totalData"/>
+        <FlightsFilters :data="totalData" @setDataList="setDataList" />
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
@@ -24,7 +24,7 @@
             :page-sizes="[5, 10,15, 20]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="flightsData.total"
+            :total="total"
           ></el-pagination>
         </div>
       </div>
@@ -49,19 +49,20 @@ export default {
     return {
       flightsData: {
         flights: [],
-        info:{},
-        options:{}
+        info: {},
+        options: {}
       },
       // 使数据不受影响存储原始数据
       totalData: {
         flights: [],
-        info:{},
-        options:{}
+        info: {},
+        options: {}
       },
 
       loading: true,
       pageIndex: 1,
-      pageSize: 5
+      pageSize: 5,
+      total:0
     };
   },
   components: {
@@ -77,8 +78,9 @@ export default {
     });
     if (res.status == 200) {
       this.flightsData = res.data;
-      this.totalData = {...res.data}
-        console.log(this.flightsData);
+      this.totalData = { ...res.data };
+      // console.log(this.flightsData);
+      this.total = this.flightsData.total
       this.loading = false;
     }
   },
@@ -90,6 +92,13 @@ export default {
     //   更换页码
     handleCurrentChange(val) {
       this.pageIndex = val;
+    },
+    // 筛选的时候发生变化
+    setDataList(arr) {
+      // console.log(arr);
+      this.flightsData.flights = arr
+      this.total = arr.length
+      this.pageIndex = 1
     }
   },
   //   监听页码或者显示条数变化
