@@ -4,24 +4,20 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="totalData"/>
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsItem
-          v-for="(item,index) in flightsList"
-          :key="index"
-          :data="item"
-          v-if="flightsData.flights"
-        />
+        <FlightsItem v-for="(item,index) in flightsList" :key="index" :data="item" />
 
         <div class="tips" v-if="flightsData.flights.length==0 && loading==false">
           <span>您搜索的城市暂未开通该航班哦 o(╥﹏╥)o</span>
         </div>
-        <div class="pages" v-if="flightsData.flights">
+        <div class="pages">
           <el-pagination
+            v-if="flightsData.flights.length"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="pageIndex"
@@ -35,6 +31,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
+        <FlightsAside />
         <!-- 侧边栏组件 -->
       </div>
     </el-row>
@@ -45,11 +42,21 @@
 import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead";
 import FlightsItem from "@/components/air/flightsItem";
+import FlightsFilters from "@/components/air/flightsFilters";
+import FlightsAside from "@/components/air/flightsAside";
 export default {
   data() {
     return {
       flightsData: {
-        flights: []
+        flights: [],
+        info:{},
+        options:{}
+      },
+      // 使数据不受影响存储原始数据
+      totalData: {
+        flights: [],
+        info:{},
+        options:{}
       },
 
       loading: true,
@@ -59,7 +66,9 @@ export default {
   },
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters,
+    FlightsAside
   },
   async mounted() {
     const res = await this.$axios({
@@ -68,7 +77,8 @@ export default {
     });
     if (res.status == 200) {
       this.flightsData = res.data;
-      //   console.log(this.flightsData.flights);
+      this.totalData = {...res.data}
+        console.log(this.flightsData);
       this.loading = false;
     }
   },

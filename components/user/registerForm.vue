@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { async } from 'q';
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -33,7 +34,7 @@ export default {
         callback(new Error("请再次输入密码"));
       } else if (value !== this.registForm.password) {
         callback(new Error("两次输入密码不一致!"));
-      }else{
+      } else {
         // 必须设置回调函数，否则该验证一直在执行导致整表无法校验
         callback();
       }
@@ -68,11 +69,7 @@ export default {
         return;
       }
 
-      const res = await this.$axios({
-        url: "/captchas",
-        method: "POST",
-        data: { tel: this.registForm.username }
-      });
+      const res = await this.$store.dispatch('user/sendCaptcha',this.registForm.username)
       if (res.status === 200) {
         const { code } = res.data;
         this.$message.success(`验证码为${code}`);
@@ -81,30 +78,20 @@ export default {
     handleRegSubmit() {
       const { checkPass, ...props } = this.registForm;
 
-      console.log(this.$refs.registForm);
-      this.$refs.registForm.validate(valid => {
+      // console.log(this.$refs.registForm);
+      this.$refs.registForm.validate(async valid => {
         if (valid) {
-   
-
-          this.$axios({
-            url: "/accounts/register",
-            method: "POST",
-            data: props
-          }).then(res => {
-            if (res.status === 200) {
-              const data = res.data;
-              //   调用mutations的方法修改state的值
-              this.$store.commit("user/setUserInfo", data);
-              //    console.log(this.$store.state)
-              this.$message.success("登录成功");
-              setTimeout(() => {
-                this.$router.push("/");
-              }, 1500);
-            }
-          });
+          const res = await this.$store.dispatch("user/register", props);
+         
+          if (res.status == 200) {
+               console.log(this.$store.state)
+            this.$message.success("登录成功");
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 1500);
+          }
         }
       });
-     
     }
   }
 };

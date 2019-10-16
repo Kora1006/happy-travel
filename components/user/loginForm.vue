@@ -44,7 +44,7 @@ export default {
           if(res.status ==200){
             this.$message.success('登录成功');
             setTimeout(()=>{
-              this.$router.push('/')
+              this.$router.back('/')
             },1500)
           }
         }
