@@ -47,7 +47,9 @@
             </el-col>
             <el-col :span="5" class="price">￥{{item.par_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <nuxt-link :to="`/air/order?id=${data.id}&seat_xid=${item.seat_xid}`">
+                <el-button type="warning" size="mini">选定</el-button>
+              </nuxt-link>
               <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
@@ -84,15 +86,15 @@ export default {
       let dep_time = this.data.dep_time.split(":");
       //   console.log(arr_time)
 
-    //   如果是第二天
-    if(arr_time[0]<dep_time[0]){
-        arr_time[0] +=24
-    }
+      //   如果是第二天
+      if (arr_time[0] < dep_time[0]) {
+        arr_time[0] += 24;
+      }
       let start = dep_time[0] * 60 + +dep_time[1];
       let end = arr_time[0] * 60 + +arr_time[1];
-      let hour=Math.floor((end-start)/60)
-      let min = (end-start)%60
-      return `${hour}小时${min}分钟`
+      let hour = Math.floor((end - start) / 60);
+      let min = (end - start) % 60;
+      return `${hour}小时${min}分钟`;
     }
   }
 };
