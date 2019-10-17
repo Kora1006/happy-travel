@@ -76,7 +76,7 @@ export default {
     return {
       filters: {
         airport: { name: "org_airport_name", value: "" }, // 机场
-        // flightTimes: {name:''}, // 出发时间
+        flightTimes: {name:'dep_time',value:""}, // 出发时间
         company: { name: "airline_name", value: "" }, // 航空公司
         airSize: { name: "plane_size", value: "" } // 机型大小
       },
@@ -101,10 +101,17 @@ export default {
       this.data.flights.forEach(item => {
         let valid = true;
         Object.keys(this.filters).forEach(v => {
-          // 即该属性无值
+           // 即该属性无值
           if (!this.filters[v].value) return;
+         else if(v==='flightTimes'){
+            const arr2 = this.filters[v].value.split(",")
+            let start=item[this.filters[v].name].split(":")[0]
+            if(start < +arr2[0] || start > +arr2[1]){
+              valid = false
+            }
+         }
           // 符合筛选条件的
-          if (item[this.filters[v].name] !== this.filters[v].value) {
+         else if (item[this.filters[v].name] !== this.filters[v].value) {
             valid = false;
           }
         });
@@ -126,14 +133,15 @@ export default {
 
     // 选择出发时间时候触发
     handleFlightTimes(value) {
-      // console.log(value)
-      const arr = value.split(",");
-      const arr2 = this.data.flights.filter(v => {
-        let start = v.dep_time.split(":")[0];
-        return start >= +arr[0] && start <= +arr[1];
-      });
-      // console.log(arr2);
-      this.$emit("setDataList", arr2);
+      this.filters.flightTimes.value=value
+   
+      // const arr = value.split(",");
+      // const arr2 = this.data.flights.filter(v => {
+      //   let start = v.dep_time.split(":")[0];
+      //   return start >= +arr[0] && start <= +arr[1];
+      // });
+      this.handleFliters()
+      // this.$emit("setDataList", arr2);
     },
 
     // 选择航空公司时候触发
@@ -152,7 +160,9 @@ export default {
 
     // 撤销条件时候触发
     handleFlitersCancel() {
-      // console.log("我被撤销了");
+      this.filters.airSize.value = "";
+      this.filters.company.value = "";
+      this.filters.airport.value = "";
 
       this.$emit("setDataList", this.data.flights);
     }

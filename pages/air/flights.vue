@@ -71,8 +71,13 @@ export default {
     FlightsFilters,
     FlightsAside
   },
-  async mounted() {
-    const res = await this.$axios({
+ mounted() {
+    this.getData()
+  },
+  methods: {
+    // 更新数据
+   async getData(){
+      const res = await this.$axios({
       url: "/airs",
       params: this.$route.query
     });
@@ -83,8 +88,7 @@ export default {
       this.total = this.flightsData.total
       this.loading = false;
     }
-  },
-  methods: {
+    },
     //   更换每页显示条数
     handleSizeChange(val) {
       this.pageSize = val;
@@ -109,6 +113,12 @@ export default {
         this.pageSize * this.pageIndex
       );
       return data;
+    }
+  },
+  // 监听路由数据
+  watch:{
+    $route(){
+      this.getData()
     }
   }
 };

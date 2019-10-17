@@ -191,6 +191,8 @@ export default {
         path: "/air/flights",
         query: this.form
       });
+      // 将获取的数据给store
+      this.$store.commit('air/setAirData',this.form)
     }
   }
 };

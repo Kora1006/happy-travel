@@ -1,4 +1,4 @@
-import { async } from "q"
+
 
 export const state = () => {
     return {
@@ -23,7 +23,7 @@ export const mutations = {
 }
 
 
-// 异步修改state
+// 异步修改state(主要是在其中调用mutation的方法去修改states)
 export const actions = {
     // 发送登录请求获取登录信息
     async login(state, data) {
