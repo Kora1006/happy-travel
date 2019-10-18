@@ -10,6 +10,7 @@
  */
 
  export function computeTime(arr_Time,dep_Time){
+   if(!arr_Time || !dep_Time)return;
     let arr_time = arr_Time.split(":");
     let dep_time = dep_Time.split(":");
    

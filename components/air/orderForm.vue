@@ -31,7 +31,7 @@
             v-for="(item,index) in orderData.insurances"
             :key="index"
             :label="`${item.type}：￥${item.price}/份x1  最高赔付${item.compensation}`"
-            @click="handleInsurance(item.id)"
+            @change="handleInsurance(item.id)"
             border
           ></el-checkbox>
         </div>
@@ -109,44 +109,54 @@ export default {
         return;
       }
 
-      const res = await this.$store.dispatch('user/sendCaptcha',this.contactPhone)
+      const res = await this.$store.dispatch(
+        "user/sendCaptcha",
+        this.contactPhone
+      );
       if (res.status === 200) {
         const { code } = res.data;
         this.$message.success(`验证码为${code}`);
       }
     },
-
+    // 选择保险
+    handleInsurance(id) {
+      const index = this.insurances.indexOf(id);
+      // 点击事件，如果已存在表示需要取消
+      if (index > -1) {
+        this.insurances.splice(index, 1);
+      } else {
+        this.insurances.push(id);
+      }
+    },
     // 提交订单
     handleSubmit() {
-      const orderData={
-        users:this.users,
-        insurances:this.insurances,
-        contactName:this.contactName,
-        contactPhone:this.contactPhone,
-        invoice:this.invoice,
-        seat_xid:this.$route.query.seat_xid,
-        air:this.$route.query.id
-      }
-      // console.log(orderData)
+      const orderData = {
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        captcha: this.captcha,
+        invoice: this.invoice,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id
+      };
+
       this.$axios({
-        url:'/airorders',
-        method:'POST',
-        data:orderData
-      }).then(res=>{
-        console.log(res)
-      })
+        url: "/airorders",
+        method: "POST",
+        data: orderData,
+        headers: {
+          // 这是jwt标准的token
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          console.log(data)
+        }
+      });
     }
   },
-  // 选择保险
-  handleInsurance(id) {
-    const index = this.insurances.indexOf(id);
-    // 点击事件，如果已存在表示需要取消
-    if (index > -1) {
-      this.insurances.splice(index, 1);
-    } else {
-      this.insurances.push(id);
-    }
-  }
+  
 };
 </script>
 
