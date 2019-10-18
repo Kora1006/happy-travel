@@ -58,6 +58,7 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    <span v-show="false">{{totalPrice}}</span>
   </div>
 </template>
 
@@ -91,11 +92,13 @@ export default {
         username: "",
         id: ""
       });
+      this.$store.commit("air/setUsers", this.users);
     },
 
     // 移除乘机人
     handleDeleteUser(index) {
       this.users.splice(index, 1);
+      this.$store.commit("air/setUsers", this.users);
     },
 
     // 发送手机验证码
@@ -127,6 +130,7 @@ export default {
       } else {
         this.insurances.push(id);
       }
+      this.$store.commit("air/setInsurances", this.insurances);
     },
     // 提交订单
     handleSubmit() {
@@ -151,12 +155,19 @@ export default {
         }
       }).then(res => {
         if (res.status == 200) {
-          console.log(data)
+          console.log(data);
         }
       });
     }
   },
-  
+  computed: {
+    totalPrice() {
+      let airPrice = this.users.length * this.orderData.seat_infos.par_price;
+      let insurancePrice = this.insurances.length * 30*this.users.length;
+      let total = airPrice + insurancePrice;
+      this.$store.commit("air/setTotalPrice", total);
+    }
+  }
 };
 </script>
 

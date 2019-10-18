@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       orderData: {
+        seat_infos: {},
         insurances: []
       },
       orderInfo: {
@@ -46,13 +47,11 @@ export default {
         const { data } = res;
         this.orderData = data;
         this.orderInfo = data;
-        console.log(this.orderInfo)
+        console.log(this.orderInfo);
       }
     });
   },
-  methods: {
-    
-  }
+  methods: {}
 };
 </script>
 

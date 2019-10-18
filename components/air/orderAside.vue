@@ -25,30 +25,26 @@
       <span>金额</span>
       <span>数量</span>
     </el-row>
-    <el-row 
-    type="flex" 
-    justify="space-between" 
-    class="info-bar"
-    >
+    <el-row type="flex" justify="space-between" class="info-bar">
       <span>成人票</span>
       <span>￥{{orderInfo.seat_infos.par_price}}</span>
       <span>1</span>
     </el-row>
-    <el-row 
-    type="flex" 
-    justify="space-between" 
-    class="info-bar"
-    v-for="(item,index) in orderInfo.insurances"
-    :key="index"
+    <el-row
+      type="flex"
+      justify="space-between"
+      class="info-bar"
+      v-for="(item,index) in orderInfo.insurances"
+      :key="index"
     >
       <span>{{item.type}}</span>
       <span>￥{{item.price}}</span>
       <span>1</span>
     </el-row>
-   
+
     <el-row type="flex" justify="space-between" align="middle" class="info-bar">
       <span>应付总额</span>
-      <span class="price">￥3000</span>
+      <span class="price">￥{{$store.state.air.totalPrice}}</span>
     </el-row>
   </div>
 </template>
@@ -65,8 +61,10 @@ export default {
   computed: {
     rankTime() {
       return computeTime(this.orderInfo.arr_time, this.orderInfo.dep_time);
-    }
-  }
+    },
+ 
+  },
+ 
 };
 </script>
 
