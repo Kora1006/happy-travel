@@ -7,7 +7,11 @@ export default (context) => {
         const { message, statusCode } = res.response.data
         console.log(res.response)
         if (statusCode === 400) {
-            Message.error({message})
+            Message.error({ message })
+        }
+        if (statusCode === 403) {
+            // 路由重定向的方法
+            context.redirect("/user/login");
         }
     })
 } 
