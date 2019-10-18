@@ -135,13 +135,8 @@ export default {
     handleFlightTimes(value) {
       this.filters.flightTimes.value=value
    
-      // const arr = value.split(",");
-      // const arr2 = this.data.flights.filter(v => {
-      //   let start = v.dep_time.split(":")[0];
-      //   return start >= +arr[0] && start <= +arr[1];
-      // });
       this.handleFliters()
-      // this.$emit("setDataList", arr2);
+      
     },
 
     // 选择航空公司时候触发

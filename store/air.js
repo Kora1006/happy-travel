@@ -11,6 +11,9 @@ export const mutations = {
     },
     setTotalPrice(state,price){
         state.totalPrice = price
+    },
+    deletAirData(state,index){
+        state.airDataList.splice(index,1)
     }
 
 }

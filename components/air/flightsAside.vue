@@ -29,6 +29,7 @@
               <p>{{item.departDate}}</p>
             </div>
             <span>选择</span>
+            <span @click="handleClearHistory(index)">删除</span>
           </el-row>
         </nuxt-link>
       </div>
@@ -37,7 +38,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    handleClearHistory(index){
+     return this.$store.commit('air/deletAirData',index)
+    }
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -79,7 +86,7 @@ export default {};
   }
 
   .history-item {
-    padding: 10px 0;
+    padding: 5px 0;
     font-size: 14px;
     border-bottom: 1px #eee solid;
 

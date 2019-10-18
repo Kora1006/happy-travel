@@ -154,8 +154,15 @@ export default {
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         }
       }).then(res => {
+        const { data, message } = res.data;
+        this.$message.success(message);
         if (res.status == 200) {
-          console.log(data);
+          this.$router.push({
+            path: "/air/pay",
+            query: {
+              id: data.id
+            }
+          });
         }
       });
     }
@@ -163,7 +170,7 @@ export default {
   computed: {
     totalPrice() {
       let airPrice = this.users.length * this.orderData.seat_infos.par_price;
-      let insurancePrice = this.insurances.length * 30*this.users.length;
+      let insurancePrice = this.insurances.length * 30 * this.users.length;
       let total = airPrice + insurancePrice;
       this.$store.commit("air/setTotalPrice", total);
     }

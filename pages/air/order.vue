@@ -50,8 +50,7 @@ export default {
         console.log(this.orderInfo);
       }
     });
-  },
-  methods: {}
+  }
 };
 </script>
 

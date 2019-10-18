@@ -9,7 +9,7 @@ export default (context) => {
         if (statusCode === 400) {
             Message.error({ message })
         }
-        if (statusCode === 403) {
+        if ([401, 403].indexOf(statusCode) > -1) {
             // 路由重定向的方法
             context.redirect("/user/login");
         }
