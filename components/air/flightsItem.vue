@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { computeTime } from "@/until/until";
 export default {
   props: {
     // 数据
@@ -82,19 +83,8 @@ export default {
   },
   computed: {
     rankTime() {
-      let arr_time = this.data.arr_time.split(":");
-      let dep_time = this.data.dep_time.split(":");
-      //   console.log(arr_time)
-
-      //   如果是第二天
-      if (arr_time[0] < dep_time[0]) {
-        arr_time[0] += 24;
-      }
-      let start = dep_time[0] * 60 + +dep_time[1];
-      let end = arr_time[0] * 60 + +arr_time[1];
-      let hour = Math.floor((end - start) / 60);
-      let min = (end - start) % 60;
-      return `${hour}小时${min}分钟`;
+      return computeTime(this.data.arr_time, this.data.dep_time);
+      
     }
   }
 };
