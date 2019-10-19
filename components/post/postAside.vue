@@ -1,20 +1,19 @@
 <template>
   <div class="menu-wrap">
     <!-- 侧边菜单栏 -->
-    <div class="menu-body">
+    <div class="menu-body" @mouseleave="currentTab = -1">
       <div
         class="menu-item"
         v-for="(item,index) in options"
         :key="index"
-        @mouseover="handleChangeTab(index)"
-        @mouseout="currentTab = -1"
+       
       >
-        <div class="menu-name" :class="{active:currentTab === index}">
+        <div class="menu-name" :class="{active:currentTab === index}"   @mouseover="handleChangeTab(index)">
           <span>{{item.type}}</span>
           <i class="iconfont el-icon-arrow-right" style="font-size:20px"></i>
         </div>
 
-        <div class="menu-list" v-show="currentTab === index">
+        <div class="menu-list" v-if="currentTab === index">
           <div v-for="(value,id) in item.children" :key="id" style="padding:5px 0px">
             <nuxt-link :to="`/post?city=${value.city}`">
               <i class="num">{{id+1}}</i>
@@ -71,7 +70,6 @@ export default {
 .menu-item {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   align-items: center;
 
   .menu-name {
@@ -86,6 +84,7 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
+    z-index: 1;
     width: 400px;
     box-sizing: border-box;
     padding: 10px 0px 10px 20px;
