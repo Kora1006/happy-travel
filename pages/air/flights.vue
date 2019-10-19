@@ -42,7 +42,7 @@
 import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead";
 import FlightsItem from "@/components/air/flightsItem";
-import FlightsFilters from "@/components/air/flightsFilters";
+import FlightsFilters from "@/components/air/flightsFilters-copy";
 import FlightsAside from "@/components/air/flightsAside";
 export default {
   data() {

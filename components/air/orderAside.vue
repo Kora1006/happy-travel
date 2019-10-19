@@ -30,6 +30,11 @@
       <span>￥{{orderInfo.seat_infos.par_price}}</span>
       <span>1</span>
     </el-row>
+    <el-row type="flex" justify="space-between" class="info-bar">
+      <span>机建/燃油费</span>
+      <span>￥50/人/单程</span>
+      <span>1</span>
+    </el-row>
     <el-row
       type="flex"
       justify="space-between"
@@ -61,10 +66,8 @@ export default {
   computed: {
     rankTime() {
       return computeTime(this.orderInfo.arr_time, this.orderInfo.dep_time);
-    },
- 
-  },
- 
+    }
+  }
 };
 </script>
 

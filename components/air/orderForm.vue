@@ -171,7 +171,8 @@ export default {
     totalPrice() {
       let airPrice = this.users.length * this.orderData.seat_infos.par_price;
       let insurancePrice = this.insurances.length * 30 * this.users.length;
-      let total = airPrice + insurancePrice;
+      let oilPrice = this.users.length * 50;
+      let total = airPrice + insurancePrice + oilPrice;
       this.$store.commit("air/setTotalPrice", total);
     }
   }
