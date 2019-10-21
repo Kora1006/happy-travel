@@ -2,7 +2,7 @@
   <div class="content-wrap">
     <div class="content-item-3" v-if="postData.images && postData.images.length>1">
       <h3>{{postData.title}}</h3>
-      <div class="content">{{postData.content}}</div>
+      <div class="content">{{postData.summary}}</div>
       <el-row type="flex" justify="space-between" class="content-img-3">
         <img
           v-for="(item,index) in postData.images"
@@ -39,7 +39,7 @@
         </el-col>
         <el-col :span="16">
           <h3>{{postData.title}}</h3>
-          <div class="content">{{postData.content}}</div>
+          <div class="content">{{postData.summary}}</div>
           <div class="post-info">
             <div class="info-left">
               <i class="el-icon-location-outline"></i>
@@ -131,11 +131,8 @@ export default {
   width: 100%;
   padding: 10px 10px 0px 0px;
   box-sizing: border-box;
-  img {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  width: 220px;
+  height: 150px;
+  object-fit: cover;
 }
 </style>

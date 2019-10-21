@@ -139,7 +139,13 @@ export default {
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         }
       }).then(res => {
-        console.log(res);
+        if(res.status==200){
+          const {message}=res.data
+          this.$message.success(message)
+          setTimeout(()=>{
+            this.$router.push('/post')
+          },1500)
+        }
       });
     }
   }

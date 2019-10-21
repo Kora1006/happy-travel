@@ -41,19 +41,18 @@ export default {
   },
   methods: {
     // 获取数据
-    getPostData() {
-      this.$axios({
+    async getPostData() {
+      const res = await this.$axios({
         url: "/posts",
         params: {
           city: this.$route.query.city
         }
-      }).then(res => {
-        if (res.status == 200) {
-          const { data } = res.data;
-          this.postDataList = data;
-          this.postList = data
-        }
       });
+      if (res.status == 200) {
+        const { data } = res.data;
+        this.postDataList = data;
+        console.log(data)
+      }
     },
     // 更换每页显示条数
     handleSizeChange(value) {
@@ -73,12 +72,12 @@ export default {
         (this.pageIndex - 1) * this.pageSize,
         this.pageSize * this.pageIndex
       );
-      return posts
+      return posts;
     }
   },
-  watch:{
-    $route(){
-      this.getPostData()
+  watch: {
+    $route() {
+      this.getPostData();
     }
   }
 };
