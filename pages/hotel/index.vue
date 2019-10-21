@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 高德地图 -->
-    <div id="map-wrap"></div> 
+    <div id="map-wrap"></div>index
   </div>
 </template>
 
