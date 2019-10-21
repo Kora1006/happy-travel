@@ -1,11 +1,7 @@
 <template>
   <div class="search-wrap">
-    <el-input
-      :placeholder="newCity"
-      v-model="city"
-      class="search-input"
-    >
-      <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSearch" ></i>
+    <el-input :placeholder="newCity" v-model="city" class="search-input">
+      <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSearch"></i>
     </el-input>
     <div class="recommend-city">
       推荐：
@@ -22,7 +18,9 @@
     <el-row type="flex" justify="space-between">
       <h4>推荐攻略</h4>
 
-      <el-button type="primary" icon="el-icon-edit" class="search-btn">写游记</el-button>
+      <nuxt-link to="/post/create">
+        <el-button type="primary" icon="el-icon-edit" class="search-btn">写游记</el-button>
+      </nuxt-link>
     </el-row>
   </div>
 </template>
@@ -36,7 +34,6 @@ export default {
   },
   methods: {
     handleSearch() {
-     
       this.$router.push(`/post?city=${this.city}`);
     }
   },
@@ -49,12 +46,12 @@ export default {
   computed: {
     newCity() {
       const { city } = this.$route.query;
-      this.city  = city
-      let cityName=''
+      this.city = city;
+      let cityName = "";
       if (!city) {
-        cityName = "请输入想去的地方,比如:'北京'"
-      }else{
-        cityName  = city
+        cityName = "请输入想去的地方,比如:'北京'";
+      } else {
+        cityName = city;
       }
       return cityName;
       // console.log(this.city);
@@ -65,7 +62,7 @@ export default {
 
 <style lang="less" scoped>
 .search-wrap {
-  width: 870px;
+  width: 100%;
   border-bottom: 1px solid #eeeeee;
 }
 .search-input {

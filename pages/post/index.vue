@@ -1,46 +1,85 @@
 <template>
-  <div class="container">
+  <el-row type="flex" class="container" justify="space-between">
     <!-- 右侧推荐城市 -->
-    <div class="post-aside">
+    <el-col class="post-aside">
       <PostAside />
-    </div>
+    </el-col>
     <!-- 左侧搜索栏和攻略列表 -->
-    <div class="post-content">
+    <el-col class="post-content">
       <PostSearch />
-    </div>
-  </div>
+      <PostItem v-for="(item,index) in postDataList" :key="index" :postData="item" />
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-sizes="[5,10, 15, 20]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="postDataList.length"
+        class="pagination"
+      ></el-pagination>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 import PostAside from "@/components/post/postAside";
 import PostSearch from "@/components/post/postSearch";
+import PostItem from "@/components/post/postItem";
 export default {
   components: {
     PostAside,
-    PostSearch
+    PostSearch,
+    PostItem
+  },
+  data() {
+    return {
+      postDataList: [],
+      pageSize: 5,
+      pageIndex: 1
+    };
+  },
+  methods: {
+    // 更换每页显示条数
+    handleSizeChange(value) {
+      this.pageSize = value;
+    },
+    // 更换页码
+    handleCurrentChange(value) {
+      this.pageIndex = value;
+    }
+  },
+  mounted() {
+    this.$axios({
+      url: "/posts",
+      params: {
+        city: this.$route.query.city
+      }
+    }).then(res => {
+      if (res.status == 200) {
+        const { data } = res.data;
+
+        this.postDataList = data;
+      }
+    });
   }
 };
 </script>
 
 <style lang="less" scoped>
 .container {
-  position: relative;
   width: 1000px;
-  height: 1000px;
+
   margin: 20px auto;
-  display: flex;
-  justify-content: space-between;
 }
 .post-aside {
-  position: absolute;
-  top: 0;
-  left: 0;
-
+  width: 30%;
 }
 .post-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 730px;
+  width: 70%;
+}
+.pagination {
+  text-align: center;
+  margin: 10px;
 }
 </style>
