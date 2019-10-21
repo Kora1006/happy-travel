@@ -7,7 +7,7 @@
     <!-- 左侧搜索栏和攻略列表 -->
     <el-col class="post-content">
       <PostSearch />
-      <PostItem v-for="(item,index) in postDataList" :key="index" :postData="item" />
+      <PostItem v-for="(item,index) in postList" :key="index" :postData="item" />
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -40,6 +40,21 @@ export default {
     };
   },
   methods: {
+    // 获取数据
+    getPostData() {
+      this.$axios({
+        url: "/posts",
+        params: {
+          city: this.$route.query.city
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          const { data } = res.data;
+          this.postDataList = data;
+          this.postList = data
+        }
+      });
+    },
     // 更换每页显示条数
     handleSizeChange(value) {
       this.pageSize = value;
@@ -50,18 +65,21 @@ export default {
     }
   },
   mounted() {
-    this.$axios({
-      url: "/posts",
-      params: {
-        city: this.$route.query.city
-      }
-    }).then(res => {
-      if (res.status == 200) {
-        const { data } = res.data;
-
-        this.postDataList = data;
-      }
-    });
+    this.getPostData();
+  },
+  computed: {
+    postList() {
+      let posts = this.postDataList.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageSize * this.pageIndex
+      );
+      return posts
+    }
+  },
+  watch:{
+    $route(){
+      this.getPostData()
+    }
   }
 };
 </script>

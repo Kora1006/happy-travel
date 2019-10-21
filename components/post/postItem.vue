@@ -28,7 +28,7 @@
         <span class="info-right">54赞</span>
       </div>
     </div>
-    <div class="content-item-1" v-if="postData.images && postData.images.length==1">
+    <div class="content-item-1" v-if="postData.images.length<=1">
       <el-row type="flex" justify="space-between">
         <el-col :span="8">
           <img

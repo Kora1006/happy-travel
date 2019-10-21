@@ -21,7 +21,7 @@
         ></el-autocomplete>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>或者
+        <el-button type="primary" @click="onSubmit">立即创建</el-button>&nbsp;或者
         <span style="color:#ffa500;" @click="handleDraft">保存到草稿</span>
       </el-form-item>
     </el-form>
@@ -125,13 +125,22 @@ export default {
       let newpost = { ...this.form };
       let timer = moment().format("YYYY-MM-DD");
       newpost.timer = timer;
-      this.$store.commit('post/setPostData',newpost)
- 
+      this.$store.commit("post/setPostData", newpost);
     },
     // 发布攻略
     onSubmit() {
       this.getPostContent();
-      console.log(this.form);
+      this.$axios({
+        url: "/posts",
+        method: "POST",
+        data: this.form,
+        headers: {
+          // 这是jwt标准的token
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        }
+      }).then(res => {
+        console.log(res);
+      });
     }
   }
 };

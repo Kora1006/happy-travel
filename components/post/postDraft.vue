@@ -47,7 +47,6 @@ export default {
   },
   mounted() {
     this.getPostData();
-    console.log(this.postList);
   },
   watch: {
     $store() {
@@ -73,8 +72,8 @@ export default {
     text-overflow: ellipsis;
   }
 }
-/deep/ .el-button{
-    font-size: 13px;
-    padding: 10px;
+/deep/ .el-button {
+  font-size: 13px;
+  padding: 10px;
 }
 </style>
