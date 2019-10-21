@@ -3,11 +3,11 @@
     <el-row type="flex" justify="space-between">
       <!-- 发布内容 -->
       <el-col :span="18">
-        <CreatePost />
+        <CreatePost/>
       </el-col>
       <!-- 草稿箱 -->
       <el-col :span="5">
-        <PostDraft />
+        <PostDraft/>
       </el-col>
     </el-row>
   </div>
@@ -17,10 +17,16 @@
 import CreatePost from "@/components/post/createPost";
 import PostDraft from "@/components/post/postDraft";
 export default {
+  data() {
+    return {
+      post: {}
+    };
+  },
   components: {
     CreatePost,
     PostDraft
-  }
+  },
+
 };
 </script>
 

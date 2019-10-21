@@ -13,10 +13,10 @@
       v-if="postList.length"
     >
       <el-col :span="18">
-        <p class="post-title">
+        <div class="post-title" @click="handleEditPost(index)">
           <i class="el-icon-edit"></i>
           {{item.title}}
-        </p>
+        </div>
         <span style="color:#999;font-size:13px">{{item.timer}}</span>
       </el-col>
       <el-col :span="4">
@@ -43,6 +43,11 @@ export default {
     handleRemove(index) {
       this.$store.commit("post/removePostData", index);
       this.getPostData();
+    },
+    // 编辑草稿箱文档
+    handleEditPost(index) {
+ 
+      this.$router.push('/post/create?index='+index)
     }
   },
   mounted() {

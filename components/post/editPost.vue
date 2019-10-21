@@ -25,6 +25,7 @@
         <span style="color:#ffa500;" @click="handleDraft">保存到草稿</span>
       </el-form-item>
     </el-form>
+    
   </div>
 </template>
 
@@ -49,9 +50,7 @@ export default {
       //   校验表单内容
       rules: {
         title: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        content: [
-          { required: true, message: "请输入攻略内容", trigger: "blur" }
-        ],
+        content: [ { required: true, message: "请输入攻略内容", trigger: "blur" }],
         city: [{ required: true, message: "请选择城市", trigger: "blur" }]
       },
       config: {
@@ -130,13 +129,11 @@ export default {
     // 发布攻略
     onSubmit() {
       this.getPostContent();
-      
-      const {timer,...newPost}=this.form
-
+   
       this.$axios({
         url: "/posts",
         method: "POST",
-        data: newPost,
+        data: this.form,
         headers: {
           // 这是jwt标准的token
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
@@ -150,17 +147,6 @@ export default {
           }, 1500);
         }
       });
-    }
-  },
-  watch: {
-    $route() {
-      if (this.$route.query) {
-        const { index } = this.$route.query;
-        const postList = this.$store.state.post.postDraftList;
-        this.form = {...postList[index]};
-        // 将文章内容赋给富文本编辑器
-        this.$refs.vueEditor.editor.clipboard.dangerouslyPasteHTML(0,this.form.content)
-      }
     }
   }
 };

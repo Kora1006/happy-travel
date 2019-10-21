@@ -51,7 +51,7 @@ export default {
       if (res.status == 200) {
         const { data } = res.data;
         this.postDataList = data;
-        console.log(data)
+        // console.log(data)
       }
     },
     // 更换每页显示条数
