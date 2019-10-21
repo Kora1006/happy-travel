@@ -1,4 +1,3 @@
-@@ -0,0 +1,217 @@
 <template>
     <div class="main">
 
@@ -41,7 +40,7 @@
                 <el-col :span="6">
                     <el-input
                         placeholder="请选择入住人数"
-                        suffix-icon="el-icon-setting"
+                        suffix-icon="el-icon-user-solid"
                         v-model="input"                      
                         @click="click_P"
                         v-popover:popover2>
@@ -60,7 +59,7 @@
             <el-popover
                 ref="popover2"
                 style="width: 300px; transform-origin: center top; z-index: 2047; ">
-                
+                <div style="margin-bottom:10px">
                 <span style="margin-right:5px;">每间 :</span>
 
                 <el-select v-model="value1" placeholder="成人" style="width: 85px">
@@ -82,8 +81,48 @@
                 </el-select>
                 
                     <el-button type="primary" class="sure_P" @click="handleSure">确定</el-button>
-              
+              </div> 
+
+              <div>
+                <span>温馨提示：禁止携带宠物入住，谢谢！</span>
+              </div> 
             </el-popover>
+        </div>
+
+        <!-- 攻略与地图 -->
+        <div class="map">
+          <el-row>
+              <!-- 攻略模块 -->
+              <el-col :span="14">
+                   <!-- 区域 -->
+                    <div class="district">
+                      <el-col :span="3">
+                      <span>区域:  </span>
+                      </el-col>
+                      <el-col :span="18">
+
+                        <div id="district-rg" ref="show">
+                      <span><i class="el-icon-location-outline place"></i><span class="all">全部</span>&nbsp;&nbsp;
+                        <span v-for="(item,index) in citys" :key="index" class="district-item">
+                          <a href="#" class="item-name">{{item.name}}</a>&nbsp;&nbsp;
+                        </span>
+                      </span>
+                      </div>
+
+                      <a href="#" @click="click_down" class="pack_up" v-if="!isShow2">
+                        <i class="el-icon-arrow-down pack_down"></i>等43个区域</a>
+                      <a href="#" @click="click_down" class="pack_up" v-if="isShow2">
+                        <i class="el-icon-arrow-up pack_down"></i>等43个区域</a>
+                      </el-col>
+                    </div>
+                    
+              </el-col>
+
+              <!-- 地图模块 -->
+              <el-col :span="10">
+                  <div id="container"></div> 
+              </el-col>
+          </el-row>
         </div>
     </div>
 </template>
@@ -98,11 +137,19 @@ export default {
         state: '',
         timeout:  null,
 
+        //城市景点推荐
+        citys:[],
+
         //选择日期
          value: '',
 
+        //显示隐藏城市景点
+        isShow2:false,
+
         //选择人数
         input:'',
+        value1: "",
+        value2: "",
         isShow: false, //显示和隐藏人员显示框
         options1: [
         {
@@ -120,8 +167,6 @@ export default {
         },
        
       ],
-      value1: "",
-      value2: "",
       options2: [
         {
           //选择儿童
@@ -186,11 +231,55 @@ export default {
         //确定人数
         handleSure(){
             this.input = +this.value1 + +this.value2
-        }
+        },
+
+        //显示城市景点
+        click_down(){
+          this.isShow2 = !this.isShow2
+        },
+
+        // 区域的多余部分展示和隐藏
+        click_down() {
+          this.isShow2 = !this.isShow2;
+          if (this.isShow2) {
+            this.$refs.show.style.height = "130px";
+          } else {
+            this.$refs.show.style.height = "45px";
+          }
+        },
     },
 
     mounted() {
+      //搜索框加载
       this.restaurants = this.loadAll();
+
+      //城市景点
+      this.$axios({
+          url:"/cities?name=南京",
+      }).then( res=> {
+        console.log(res,6666666)
+        const {data} = res.data
+        this.citys = data[0].scenics
+      })
+
+      //地图加载
+       window.onLoad  = function(){
+            var map = new AMap.Map('container',{
+                  zoom:14,//级别
+                  center: [113.3245904, 23.1066805],//中心点坐标
+                  viewMode:'3D'//使用3D视图
+            });
+
+            var marker = new AMap.Marker({
+                position:[113.3245904, 23.1066805]//位置
+            })
+            map.add(marker);//添加到地图
+       }
+          var url = 'https://webapi.amap.com/maps?v=1.4.15&0bb89d19d60f6b6c21251c9751c72444 &callback=onLoad';
+          var jsapi = document.createElement('script');
+          jsapi.charset = 'utf-8';
+          jsapi.src = url;
+          document.head.appendChild(jsapi);
     }
   }
 
@@ -215,4 +304,39 @@ export default {
         height: 30px;
         line-height: 8px;
     }
+
+    //地图样式
+    #container {
+      display: block;
+      margin: 0 auto;
+      width:400px;
+      height: 300px;
+      }
+      
+      //城市景点样式
+      #district-rg {
+        height: 45px;
+        overflow: hidden;
+      
+      }
+      .pack_up:hover {     
+        color: #0099ff;     
+      }
+      .pack_down{
+        color: #0099ff;  
+      }
+      .district-item a:hover{
+        color: #0099ff;    
+      }
+      .place{
+        // color: #ffc863;
+        color: #0099ff;   
+        font-size: 20px;
+      }
+      .all{
+        color: #999;
+        background-color: #eee;
+        border-radius: 5px;
+      }
+    
 </style>
