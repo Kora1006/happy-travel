@@ -95,24 +95,65 @@
               <!-- 攻略模块 -->
               <el-col :span="14">
                    <!-- 区域 -->
-                    <div class="district">
+                    <div class="district" ref="show6">
                       <el-col :span="3">
-                      <span>区域:  </span>
+                      <span>区域 :</span>
                       </el-col>
-                      <el-col :span="18">
+                      <el-col :span="20">
+                      <div id="district-rg" ref="show">
+                        <span>
 
-                        <div id="district-rg" ref="show">
-                      <span><i class="el-icon-location-outline place"></i><span class="all">全部</span>&nbsp;&nbsp;
-                        <span v-for="(item,index) in citys" :key="index" class="district-item">
-                          <a href="#" class="item-name">{{item.name}}</a>&nbsp;&nbsp;
+                          <i class="el-icon-location-outline place"></i>
+                          <span class="all">全部</span>&nbsp;&nbsp;
+
+                            <span v-for="(item,index) in citys" :key="index" class="district-item">
+                              <a href="#" class="item-name">{{item.name}}</a>&nbsp;&nbsp;
+                            </span>
                         </span>
-                      </span>
                       </div>
 
                       <a href="#" @click="click_down" class="pack_up" v-if="!isShow2">
                         <i class="el-icon-arrow-down pack_down"></i>等43个区域</a>
                       <a href="#" @click="click_down" class="pack_up" v-if="isShow2">
                         <i class="el-icon-arrow-up pack_down"></i>等43个区域</a>
+                      </el-col>
+                    </div>
+
+                    <!-- 攻略 -->
+                    <div class="strategy">
+                      <el-col :span="3">
+                      <span>攻略 :</span>
+                      </el-col>
+
+                      <el-col :span="20">
+                      <span>
+                        北京，你想要的都能在这找到。博古通今，兼容并蓄，天下一城，如是帝都。 景点以故宫为中心向四处辐射；地铁便宜通畅，而且覆盖绝大多数景点。 由于早上有天安门升旗仪式，所以大多数人选择在天安门附近住宿。</span>
+                      </el-col>
+                    </div>
+
+                    <!-- 均价 -->
+                    <div  class="price">
+                      <el-col :span="3">
+                      <span>均价 <i class="el-icon-question question"></i>&nbsp;&nbsp;&nbsp; :</span>
+                      </el-col>
+
+                      <el-col :span="20">
+                      <span>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>&nbsp;¥288
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>&nbsp;¥498
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>
+                        <i class="iconfont iconhuangguan"></i>&nbsp;¥688
+                      </span>
                       </el-col>
                     </div>
                     
@@ -242,9 +283,11 @@ export default {
         click_down() {
           this.isShow2 = !this.isShow2;
           if (this.isShow2) {
-            this.$refs.show.style.height = "130px";
+            this.$refs.show.style.height = "140px";
+            this.$refs.show6.style.height = "170px";
           } else {
-            this.$refs.show.style.height = "45px";
+            this.$refs.show.style.height = "40px";
+            this.$refs.show6.style.height = "70px";
           }
         },
     },
@@ -289,6 +332,7 @@ export default {
     .main{
         width: 1000px;
         margin: 0 auto;
+        //攻略样式
     }
 
     .bread{
@@ -306,37 +350,67 @@ export default {
     }
 
     //地图样式
+    .map{
+      margin-bottom: 20px;
+    }
     #container {
       display: block;
       margin: 0 auto;
       width:400px;
-      height: 300px;
+      height: 280px;
       }
       
-      //城市景点样式
-      #district-rg {
-        height: 45px;
-        overflow: hidden;
-      
-      }
-      .pack_up:hover {     
-        color: #0099ff;     
-      }
+      //区域样式
+      .district{
+          height: 70px;
+          font-size: 14px;
+          #district-rg {
+          height: 40px;
+          overflow: hidden;
+          .place{
+            // color: #ffc863;
+            color: #0099ff;   
+            font-size: 20px;
+          }
+           .all{
+            color: #999;
+            background-color: #eee;
+            border-radius: 5px;
+          }
+           .district-item a:hover{
+            color: #0099ff;    
+          }
+             
+        }
+
+        .pack_up {     
+          color: #0099ff;     
+        }
       .pack_down{
-        color: #0099ff;  
+          color: #0099ff;  
+        }
       }
-      .district-item a:hover{
-        color: #0099ff;    
+
+      //攻略样式
+      .strategy{       
+        font-size: 14px;
+        height: 70px;
       }
-      .place{
-        // color: #ffc863;
-        color: #0099ff;   
-        font-size: 20px;
+
+      //均价样式
+      .price{
+        position: relative;
+        font-size: 14px;
+        .question{
+          display: block;
+          position: absolute;
+          top: -3px;
+          left: 32px;
+          color:  #0099ff;
+          font-size: 15px; 
+        }
+        .iconhuangguan{
+            color: #ffc863;
+        }  
       }
-      .all{
-        color: #999;
-        background-color: #eee;
-        border-radius: 5px;
-      }
-    
 </style>
