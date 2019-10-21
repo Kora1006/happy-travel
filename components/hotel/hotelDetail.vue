@@ -136,7 +136,7 @@
                       <el-col :span="3">
                       <span>均价 <i class="el-icon-question question"></i>&nbsp;&nbsp;&nbsp; :</span>
                       </el-col>
-
+                      <el-tooltip effect="dark" content="等级评定是针对房价,设施和服务等各方面水平的综合评估">
                       <el-col :span="20">
                       <span>
                         <i class="iconfont iconhuangguan"></i>
@@ -155,6 +155,7 @@
                         <i class="iconfont iconhuangguan"></i>&nbsp;¥688
                       </span>
                       </el-col>
+                      <el-tooltip/>
                     </div>
                     
               </el-col>
