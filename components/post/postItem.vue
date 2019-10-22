@@ -17,7 +17,7 @@
           <i class="el-icon-location-outline"></i>
           <span>{{postData.cityName}}</span> by
           <img
-            :src="`${postData.account.defaultAvatar}`"
+            :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
             class="user-img"
             onerror="this.src='/pic_sea.jpeg'"
           />
@@ -45,7 +45,7 @@
               <i class="el-icon-location-outline"></i>
               <span>{{postData.cityName}}</span> by
               <img
-                :src="`${postData.account.defaultAvatar}`"
+               :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
                 class="user-img"
                 onerror="this.src='/static/avatar.jpg'"
               />
