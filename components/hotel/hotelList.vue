@@ -1,11 +1,12 @@
 <template>
   <div class="hotel_list">
-      <div class="list_fliter">
+    <!-- 条件筛选 -->
+    <div class="list_fliter">
       <el-row type="flex" class="fliter_top">
           <!-- 价格 -->
         <el-col :span="8">        
           <el-row>
-             <span>选择价格：</span>
+             <span>选择价格 ：</span>
               <el-select v-model="value1" clearable placeholder="请选择价格范围">
                 <el-option
                   v-for="item in options"
@@ -96,6 +97,69 @@
 
       </el-row>
     </div>
+
+    <!-- 酒店列表 -->
+    <div class="hotels">
+
+        <div class="hotels_item" v-for="(item,index) in hotelsList" :key="index">
+        <el-row>
+          <el-col :span="8">
+            <img :src="`${item.photos}`" :alt="`${item.name}`" style="width:310px;height:210px">
+          </el-col>
+          <el-col :span="10">
+            <h3 style="font-size:24px">
+              <nuxt-link to="#">{{item.name}}</nuxt-link>
+            </h3>
+            <span>{{item.alias}}</span>&nbsp;
+            <span style="font-size:12px;color:#ff9900;">({{item.creation_time}})</span>&nbsp;
+            <!-- 星级 -->
+            <span v-if="item.hotellevel" :title="`${item.hotellevel.name}级`">
+                <i
+                  class="iconfont iconhuangguan"
+                  v-for="num in item.hotellevel.level"
+                  :key="num"
+                  style="color:#ff9900"
+                ></i>&nbsp;
+                {{item.hoteltype.name}}
+              </span>
+             <div style="margin-top:15px;">
+                <el-col :span="10">
+                  <el-rate
+                    v-model="item.stars"
+                    disabled
+                    show-score
+                    text-color="#ff9900"
+                    score-template="{value}"
+                  ></el-rate>
+                </el-col>
+                <el-col :span="7">
+                  <span class="height-light" style="color: rgb(255, 153, 0);">{{item.all_remarks}}</span>
+                  条评价
+                </el-col>
+                <el-col :span="7">
+                  <span class="height-light" style="color: rgb(255, 153, 0);">{{item.visits_total}}</span>
+                  篇游记
+                </el-col>
+              </div>
+              <div class="location-row" style="margin-top:50px">
+                <i class="iconfont iconlocation icon_style" style="color:#00a6ff"></i>
+                位于: {{item.address}}
+              </div>
+          </el-col>
+          <el-col :span="6">
+              <div v-for="(item,index) in item.products" :key="index" class="hotel_products">
+                  <span>{{item.name}}</span>
+                  <span class="hotel_price">
+                  <span style="color: #f90;font-size: larger;">￥{{item.price}}</span>起
+                  <i data-v-0a769ebc class="el-icon-arrow-right"></i>
+                  </span>
+              </div>
+          </el-col>
+        </el-row>
+        </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -147,22 +211,37 @@ export default {
           label2: '医院'
         }],
         value4: [],
+        //酒店列表
+        hotelsList:[],
       }
     },
      methods: {
       
     },
-    mounted(){
-      this.$axios({
-        url:"/hotels/options"
-      }).then(res=>{
-        console.log(res,9999999)
-        const {data} = res.data
-        this.assets = data.assets
-        this.brands = data.brands
-        this.levels = data.levels
-        this.types = data.types
-      })
+      async mounted(){
+        //获取酒店选项
+        const res = await this.$axios({
+            url:"/hotels/options"
+        })
+            console.log(res,9999999)
+            const {data} = res.data
+            this.assets = data.assets
+            this.brands = data.brands
+            this.levels = data.levels
+            this.types = data.types
+            
+        //获取酒店列表
+        const hotelList = await this.$axios({
+              url:"/hotels",
+              params:this.$route.query
+        })
+              console.log(hotelList,888888888888)
+              const data1 = hotelList.data.data
+              this.hotelsList = data1 
+              console.log(this.hotelsList,999999)
+
+
+
     }
 }
 </script>
@@ -176,6 +255,23 @@ export default {
             .fliter_top{
                 margin-bottom: 20px;
             }
+        }
+        .hotels{
+          
+          .hotels_item{
+            padding: 25px 0;
+            border-bottom: 1px solid #eeeeee;
+            .hotel_products{
+              padding: 20px 10px;
+              display: flex;
+              justify-content: space-between;
+              align-content: center;
+              border-bottom: 1px solid #eeeeee;
+              .hotel_price{
+                margin-right: 15px;
+              }
+            }
+          }
         }      
     }
 </style>
