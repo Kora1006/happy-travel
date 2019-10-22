@@ -21,12 +21,12 @@
         <el-col :span="8">
           <el-row>
             <span>住宿等级 ：</span>
-             <el-select multiple placeholder="请选择">
+             <el-select v-model="levelsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in levels"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -54,12 +54,12 @@
         <el-col :span="8">
          <el-row>
             <span>住宿类型 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="typesValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in types"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -69,12 +69,12 @@
         <el-col :span="8">
          <el-row>
             <span>酒店设施 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="assetsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in assets"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -83,12 +83,12 @@
         <el-col :span="8">
           <el-row>
             <span>酒店品牌 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="brandsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in brands"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -117,27 +117,18 @@ export default {
           label: '1500-2000'
         }, {
           value: '选项5',
-          label: '2000-3000'
+          label: '2000以上'
         }],
         value1: '',
 
-        options1: [{
-          value2: '选项1',
-          label1: '黄金糕'
-        }, {
-          value2: '选项2',
-          label1: '双皮奶'
-        }, {
-          value2: '选项3',
-          label1: '蚵仔煎'
-        }, {
-          value2: '选项4',
-          label1: '龙须面'
-        }, {
-          value2: '选项5',
-          label1: '北京烤鸭'
-        }],
-        value3: [],
+        assets:[],
+        assetsValue:[],
+        brands:[],
+        brandsValue:[],
+        levels:[],
+        levelsValue:[],
+        types:[],
+        typesValue:[],
 
          options2: [{
           value3: '选项1',
@@ -166,6 +157,11 @@ export default {
         url:"/hotels/options"
       }).then(res=>{
         console.log(res,9999999)
+        const {data} = res.data
+        this.assets = data.assets
+        this.brands = data.brands
+        this.levels = data.levels
+        this.types = data.types
       })
     }
 }
