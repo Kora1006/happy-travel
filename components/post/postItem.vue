@@ -23,9 +23,9 @@
           />
           <span style="color:#ffa500;">{{postData.account.nickname}}</span>
           <i class="el-icon-view"></i>
-          {{postData.watch}}
+          {{postData.watch?postData.watch:0}}
         </div>
-        <span class="info-right">54赞</span>
+        <span class="info-right">{{postData.like?postData.like:0}}赞</span>
       </div>
     </div>
     <div class="content-item-1" v-if="postData.images.length<=1">
@@ -51,9 +51,9 @@
               />
               <span style="color:#ffa500;">{{postData.account.nickname}}</span>
               <i class="el-icon-view"></i>
-              {{postData.watch}}
+             {{postData.watch?postData.watch:0}}
             </div>
-            <span class="info-right">54赞</span>
+            <span class="info-right">{{postData.like?postData.like:0}}赞</span>
           </div>
         </el-col>
       </el-row>

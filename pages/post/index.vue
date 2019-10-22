@@ -62,6 +62,7 @@ export default {
         }
       }).then(res => {
         let { data } = res.data;
+        console.log(data)
         this.postDataList = data;
       });
     },
