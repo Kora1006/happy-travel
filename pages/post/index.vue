@@ -7,9 +7,14 @@
     <!-- 左侧搜索栏和攻略列表 -->
     <el-col class="post-content">
       <PostSearch />
-      <PostItem v-for="(item,index) in postList" :key="index" :postData="item" v-if="postList"/>
-      <div class="tips" v-if="postList.length ==0">
-        <i class="el-icon-warning-outline" ></i>
+      <PostItem
+        v-for="(item,index) in postDataList"
+        :key="index"
+        :postData="item"
+        v-if="postDataList"
+      />
+      <div class="tips" v-if="postDataList.length ==0">
+        <i class="el-icon-warning-outline"></i>
         <p>该城市还未有攻略哦，快去添加吧(*^▽^*)</p>
       </div>
       <el-pagination
@@ -19,10 +24,11 @@
         :page-sizes="[5,10, 15, 20]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="postDataList.length"
+        :total="total"
         class="pagination"
       ></el-pagination>
     </el-col>
+    <div v-show="false">{{changeData}}</div>
   </el-row>
 </template>
 
@@ -40,27 +46,29 @@ export default {
     return {
       postDataList: [],
       pageSize: 5,
-      pageIndex: 1
+      pageIndex: 1,
+      total: 0
     };
   },
   methods: {
     // 获取数据
-    async getPostData() {
-      const res = await this.$axios({
+    getPostData(start, limit) {
+      this.$axios({
         url: "/posts",
         params: {
-          city: this.$route.query.city
+          city: this.$route.query.city,
+          _start: start,
+          _limit: limit
         }
-      });
-      if (res.status == 200) {
-        const { data } = res.data;
+      }).then(res => {
+        let { data } = res.data;
         this.postDataList = data;
-        // console.log(data)
-      }
+      });
     },
     // 更换每页显示条数
     handleSizeChange(value) {
       this.pageSize = value;
+      this.pageIndex=1;
     },
     // 更换页码
     handleCurrentChange(value) {
@@ -68,20 +76,32 @@ export default {
     }
   },
   mounted() {
-    this.getPostData();
+    this.$axios({
+      url: "/posts",
+      params: {
+        city: this.$route.query.city
+      }
+    }).then(res => {
+      this.total = res.data.total;
+      let start = (this.pageIndex - 1) * this.pageSize;
+      let limit = this.pageSize;
+      this.getPostData(start, limit);
+    });
   },
   computed: {
-    postList() {
-      let posts = this.postDataList.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageSize * this.pageIndex
-      );
-      return posts;
+    changeData() {
+
+      let start = (this.pageIndex - 1) * this.pageSize;
+      let limit = this.pageSize;
+      this.getPostData(start, limit);
+      return ;
     }
   },
   watch: {
     $route() {
-      this.getPostData();
+      let start = (this.pageIndex - 1) * this.pageSize;
+      let limit = this.pageSize;
+      this.getPostData(start, limit);
     }
   }
 };
@@ -103,12 +123,12 @@ export default {
   text-align: center;
   margin: 10px;
 }
-.tips{
+.tips {
   margin: 50px auto;
   text-align: center;
   color: #ddd;
   font-size: 50px;
-  p{
+  p {
     font-size: 20px;
     color: #999;
   }
