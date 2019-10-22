@@ -7,7 +7,11 @@
     <!-- 左侧搜索栏和攻略列表 -->
     <el-col class="post-content">
       <PostSearch />
-      <PostItem v-for="(item,index) in postList" :key="index" :postData="item" />
+      <PostItem v-for="(item,index) in postList" :key="index" :postData="item" v-if="postList"/>
+      <div class="tips" v-if="postList.length ==0">
+        <i class="el-icon-warning-outline" ></i>
+        <p>该城市还未有攻略哦，快去添加吧(*^▽^*)</p>
+      </div>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -98,5 +102,15 @@ export default {
 .pagination {
   text-align: center;
   margin: 10px;
+}
+.tips{
+  margin: 50px auto;
+  text-align: center;
+  color: #ddd;
+  font-size: 50px;
+  p{
+    font-size: 20px;
+    color: #999;
+  }
 }
 </style>

@@ -178,5 +178,8 @@ export default {
     color: #999;
     margin-bottom: 10px;
   }
+  /deep/ .ql-editor{
+    height: 400px;
+  }
 }
 </style>

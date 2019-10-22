@@ -34,8 +34,8 @@ export default {
   },
   methods: {
     handleSearch() {
-      if(!this.city){
-        this.$message.error('请输入想要搜索的城市')
+      if (!this.city) {
+        this.$message.error("请输入想要搜索的城市");
         return;
       }
       this.$router.push(`/post?city=${this.city}`);
