@@ -2,7 +2,7 @@
   <div class="content-wrap">
     <div class="content-item-3" v-if="postData.images && postData.images.length>1">
       <h3>{{postData.title}}</h3>
-      <div class="content">{{postData.content}}</div>
+      <div class="content">{{postData.summary}}</div>
       <el-row type="flex" justify="space-between" class="content-img-3">
         <img
           v-for="(item,index) in postData.images"
@@ -17,18 +17,18 @@
           <i class="el-icon-location-outline"></i>
           <span>{{postData.cityName}}</span> by
           <img
-            :src="`${postData.account.defaultAvatar}`"
+            :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
             class="user-img"
             onerror="this.src='/pic_sea.jpeg'"
           />
           <span style="color:#ffa500;">{{postData.account.nickname}}</span>
           <i class="el-icon-view"></i>
-          {{postData.watch}}
+          {{postData.watch?postData.watch:0}}
         </div>
-        <span class="info-right">54赞</span>
+        <span class="info-right">{{postData.like?postData.like:0}}赞</span>
       </div>
     </div>
-    <div class="content-item-1" v-if="postData.images && postData.images.length==1">
+    <div class="content-item-1" v-if="postData.images.length<=1">
       <el-row type="flex" justify="space-between">
         <el-col :span="8">
           <img
@@ -39,21 +39,21 @@
         </el-col>
         <el-col :span="16">
           <h3>{{postData.title}}</h3>
-          <div class="content">{{postData.content}}</div>
+          <div class="content">{{postData.summary}}</div>
           <div class="post-info">
             <div class="info-left">
               <i class="el-icon-location-outline"></i>
               <span>{{postData.cityName}}</span> by
               <img
-                :src="`${postData.account.defaultAvatar}`"
+               :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
                 class="user-img"
                 onerror="this.src='/static/avatar.jpg'"
               />
               <span style="color:#ffa500;">{{postData.account.nickname}}</span>
               <i class="el-icon-view"></i>
-              {{postData.watch}}
+             {{postData.watch?postData.watch:0}}
             </div>
-            <span class="info-right">54赞</span>
+            <span class="info-right">{{postData.like?postData.like:0}}赞</span>
           </div>
         </el-col>
       </el-row>
@@ -131,11 +131,8 @@ export default {
   width: 100%;
   padding: 10px 10px 0px 0px;
   box-sizing: border-box;
-  img {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  width: 220px;
+  height: 150px;
+  object-fit: cover;
 }
 </style>
