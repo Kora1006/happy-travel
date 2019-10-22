@@ -1,8 +1,13 @@
 <template>
     <div>
-        
+        <!-- 酒店详情组件 -->
        <div>
            <HotelDetail/>
+       </div>
+
+       <!-- 酒店列表组件 -->
+       <div>
+           <HotelList/>
        </div>
     </div>
 </template>
@@ -10,10 +15,12 @@
 <script>
 // 引入酒店详情组件
 import HotelDetail from "@/components/hotel/hotelDetail"
+import HotelList from "@/components/hotel/hotelList"
 export default {
     //注册组件
     components:{
-        HotelDetail
+        HotelDetail,
+        HotelList
     },
 
     //请求酒店数据
