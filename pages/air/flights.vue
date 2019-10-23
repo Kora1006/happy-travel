@@ -13,7 +13,7 @@
         <FlightsItem v-for="(item,index) in flightsList" :key="index" :data="item" />
 
         <div class="tips" v-if="flightsData.flights.length==0 && loading==false">
-          <span>您搜索的城市暂未开通该航班哦 o(╥﹏╥)o</span>
+          <span>未找到符合您要求的航班哦 o(╥﹏╥)o</span>
         </div>
         <div class="pages">
           <el-pagination

@@ -1,17 +1,19 @@
 <template>
   <div class="content-wrap">
     <div class="content-item-3" v-if="postData.images && postData.images.length>1">
-      <h3>{{postData.title}}</h3>
-      <div class="content" v-html="postData.summary"></div>
-      <el-row type="flex" justify="space-between" class="content-img-3">
-        <img
-          v-for="(item,index) in postData.images"
-          :key="index"
-          :src="item"
-          onerror="this.src='/pic_sea.jpeg'"
-          v-show="index<=2"
-        />
-      </el-row>
+      <nuxt-link :to="`/post/detail?id=`+postData.id">
+        <h3>{{postData.title}}</h3>
+        <div class="content" v-html="postData.summary"></div>
+        <el-row type="flex" justify="space-between" class="content-img-3">
+          <img
+            v-for="(item,index) in postData.images"
+            :key="index"
+            :src="item"
+            onerror="this.src='/pic_sea.jpeg'"
+            v-show="index<=2"
+          />
+        </el-row>
+      </nuxt-link>
       <div class="post-info">
         <div class="info-left">
           <i class="el-icon-location-outline"></i>
@@ -32,16 +34,20 @@
     </div>
     <div class="content-item-1" v-if="postData.images.length<=1">
       <el-row type="flex" justify="space-between">
-        <el-col :span="8">
-          <img
-            :src="`${postData.images[0]}`"
-            class="content-img-1"
-            onerror="this.src='/pic_sea.jpeg'"
-          />
-        </el-col>
+        <nuxt-link :to="`/post/detail?id=`+postData.id">
+          <el-col :span="8">
+            <img
+              :src="`${postData.images[0]}`"
+              class="content-img-1"
+              onerror="this.src='/pic_sea.jpeg'"
+            />
+          </el-col>
+        </nuxt-link>
         <el-col :span="16">
-          <h3>{{postData.title}}</h3>
-          <div class="content" v-html="postData.summary"></div>
+          <nuxt-link :to="`/post/detail?id=`+postData.id">
+            <h3>{{postData.title}}</h3>
+            <div class="content" v-html="postData.summary"></div>
+          </nuxt-link>
           <div class="post-info">
             <div class="info-left">
               <i class="el-icon-location-outline"></i>

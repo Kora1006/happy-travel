@@ -23,7 +23,7 @@
         </el-select>
       </el-col>
       <el-col :span="4">
-        <el-select size="mini" v-model="flightTimes" placeholder="起飞时间" @change="handleFlightTimes">
+        <el-select size="mini" v-model="filters.flightTimes.value" placeholder="起飞时间" @change="handleFlightTimes">
           <el-option
             v-for="(item,index) in data.options.flightTimes"
             :key="index"
@@ -81,7 +81,7 @@ export default {
         company: { name: "airline_name", value: "" }, // 航空公司
         airSize: { name: "plane_size", value: "" } // 机型大小
       },
-      flightTimes: "",
+
       sizeOptions: [
         { name: "大", size: "L" },
         { name: "中", size: "M" },
@@ -187,7 +187,7 @@ export default {
       this.filters.airSize.value = "";
       this.filters.company.value = "";
       this.filters.airport.value = "";
-
+      this.filters.flightTimes.value = "";
       this.$emit("setDataList", this.data.flights);
     }
   }
