@@ -101,7 +101,7 @@
     <!-- 酒店列表 -->
     <div class="hotels">
 
-        <div class="hotels_item" v-for="(item,index) in hotelsList" :key="index">
+        <div class="hotels_item" v-for="(item,index) in dataList" :key="index">
         <el-row>
           <el-col :span="8">
             <nuxt-link :to="`/hotel/${item.id}.html`">
@@ -167,15 +167,17 @@
     <!-- 分页 -->
     <div style="margin-top:20px">
       <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[3, 6, 9, 12]"
-      :page-size="3"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="18">
-    </el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-sizes="[3,6, 9, 12]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="hotelsList.length"
+        class="pagination"
+      ></el-pagination>
     </div>
+    <!-- <div v-show="false">{{changeData}}</div> -->
 
     <!-- 加载 -->
     
@@ -234,18 +236,31 @@ export default {
         hotelsList:[],
 
         //分页
-        currentPage4: 4,
+        dataList:[],
+        pageSize: 3,
+        pageIndex: 1,
+        total: 0
         //加载
       
       }
     },
      methods: {
+      
        //切换页数
-       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+       handleSizeChange(value) {
+         //切换条数
+        this.pageSize = value;
+        this.dataList = this.hotelsList.slice(0,this.pageSize) 
+       
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+      handleCurrentChange(value) {
+        //修改当前页
+        this.pageIndex = value;
+        //修改酒店列表
+        this.dataList = this.hotelsList.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        )
       }
     
     },
@@ -254,7 +269,7 @@ export default {
         const res = await this.$axios({
             url:"/hotels/options"
         })
-            console.log(res,9999999)
+            // console.log(res,9999999)
             const {data} = res.data
             this.assets = data.assets
             this.brands = data.brands
@@ -266,14 +281,17 @@ export default {
               url:"/hotels",
               params:this.$route.query
         })
-              console.log(hotelList,888888888888)
+              // console.log(hotelList,888888888888)
               const data1 = hotelList.data.data
-              this.hotelsList = data1 
-              console.log(this.hotelsList,999999)
+              this.hotelsList = data1
+              //第一页数据
+              this.dataList = this.hotelsList.slice(0,this.pageSize) 
+      
 
 
 
-    }
+    },
+   
 }
 </script>
 
