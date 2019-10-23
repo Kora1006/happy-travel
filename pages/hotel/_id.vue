@@ -13,10 +13,12 @@
       <h2>
         {{hotel.name}}
         <i
+          v-if="hotel.hotellevel.level!==0"
           class="iconfont iconhuangguan"
           v-for="(item,index) in hotel.hotellevel.level"
           :key="index"
         ></i>
+        <span v-else style="color:#999;font-size:14px">暂无评分</span>
       </h2>
       <p style="font-size:12px;color:#999">{{hotel.alias}}</p>
       <p style="font-size:14px">
@@ -92,12 +94,13 @@
       </div>
       <div>
         <span class="info-title">品牌信息</span>
-        <span>-</span>
+        <span class="hotel-brand" v-if="hotel.hotelbrand">{{hotel.hotelbrand.name}}</span>
+        <span v-if="!hotel.hotelbrand">自主品牌</span>
       </div>
     </div>
 
     <!-- 用户评论 -->
-    <div class="guest-comment">
+    <div class="guest-comment"> 
       <h3>{{hotel.all_remarks?hotel.all_remarks:0}}条真实用户评论</h3>
       <el-row type="flex" justify="space-between">
         <el-col>
@@ -185,14 +188,18 @@ export default {
     this.hotel = res.data.data[0];
     this.smallImg = [...res.data.data[0].pics];
     this.bigImg = { ...this.smallImg[0] };
+    // 修复无level
+    if (!this.hotel.hotellevel) {
+      this.hotel.hotellevel = 0;
+    }
     // 获取酒店评论信息
     let comment = await this.$axios({
-      url:'/hotels/comments',
-      params:{
-        hotel:hid
+      url: "/hotels/comments",
+      params: {
+        hotel: hid
       }
-    })
-    console.log(comment)
+    });
+    console.log(this.hotel);
   },
   methods: {
     // 切换大小图
@@ -316,5 +323,13 @@ export default {
 .hotel-price {
   color: #fa3;
   font-weight: 700;
+}
+.hotel-brand{
+  padding: 5px 10px;
+  background-color: #fa3;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
 }
 </style>
