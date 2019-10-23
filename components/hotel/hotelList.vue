@@ -104,14 +104,16 @@
         <div class="hotels_item" v-for="(item,index) in hotelsList" :key="index">
         <el-row>
           <el-col :span="8">
+            <nuxt-link :to="`/hotel/${item.id}.html`">
             <img :src="`${item.photos}`" :alt="`${item.name}`" style="width:310px;height:210px">
+            </nuxt-link>
           </el-col>
           <el-col :span="10">
-            <h3 style="font-size:24px">
-              <nuxt-link to="#">{{item.name}}</nuxt-link>
+            <h3 style="font-size:24px;font-weight: normal;">
+              <nuxt-link :to="`/hotel/${item.id}.html`">{{item.name}}</nuxt-link>
             </h3>
-            <span>{{item.alias}}</span>&nbsp;
-            <span style="font-size:12px;color:#ff9900;">({{item.creation_time}})</span>&nbsp;
+            <span style="color:#9ea3b1">{{item.alias}}</span>&nbsp;
+            <span style="font-size:12px;color:#ff9900;font-weight:600">({{item.creation_time}})</span>&nbsp;
             <!-- 星级 -->
             <span v-if="item.hotellevel" :title="`${item.hotellevel.name}级`">
                 <i
@@ -120,7 +122,7 @@
                   :key="num"
                   style="color:#ff9900"
                 ></i>&nbsp;
-                {{item.hoteltype.name}}
+                <span style="color:#9ea3b1">{{item.hoteltype.name}}</span>
               </span>
              <div style="margin-top:15px;">
                 <el-col :span="10">
@@ -143,10 +145,11 @@
               </div>
               <div class="location-row" style="margin-top:50px">
                 <i class="iconfont iconlocation icon_style" style="color:#00a6ff"></i>
-                位于: {{item.address}}
+                <span style="color:#666"> 位于: {{item.address}}</span>
               </div>
           </el-col>
           <el-col :span="6">
+            <a href="https://www.meituan.com/jiudian/4878340/">
               <div v-for="(item,index) in item.products" :key="index" class="hotel_products">
                   <span>{{item.name}}</span>
                   <span class="hotel_price">
@@ -154,12 +157,12 @@
                   <i data-v-0a769ebc class="el-icon-arrow-right"></i>
                   </span>
               </div>
+            </a>
           </el-col>
         </el-row>
         </div>
 
     </div>
-
   </div>
 </template>
 
@@ -269,6 +272,7 @@ export default {
               border-bottom: 1px solid #eeeeee;
               .hotel_price{
                 margin-right: 15px;
+                
               }
             }
           }
