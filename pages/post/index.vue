@@ -11,7 +11,7 @@
         v-for="(item,index) in postDataList"
         :key="index"
         :postData="item"
-        v-if="postDataList"
+        v-show="postDataList"
       />
       <div class="tips" v-if="postDataList.length ==0">
         <i class="el-icon-warning-outline"></i>
