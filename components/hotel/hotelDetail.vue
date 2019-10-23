@@ -315,7 +315,8 @@ export default {
             });
 
             var marker = new AMap.Marker({
-                position:[113.3245904, 23.1066805]//位置
+                position:[113.3245904, 23.1066805],//位置
+                 title: "广州塔"
             })
             map.add(marker);//添加到地图
        }

@@ -1,11 +1,12 @@
 <template>
   <div class="hotel_list">
-      <div class="list_fliter">
+    <!-- 条件筛选 -->
+    <div class="list_fliter">
       <el-row type="flex" class="fliter_top">
           <!-- 价格 -->
         <el-col :span="8">        
           <el-row>
-             <span>选择价格：</span>
+             <span>选择价格 ：</span>
               <el-select v-model="value1" clearable placeholder="请选择价格范围">
                 <el-option
                   v-for="item in options"
@@ -21,12 +22,12 @@
         <el-col :span="8">
           <el-row>
             <span>住宿等级 ：</span>
-             <el-select multiple placeholder="请选择">
+             <el-select v-model="levelsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in levels"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -54,12 +55,12 @@
         <el-col :span="8">
          <el-row>
             <span>住宿类型 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="typesValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in types"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -69,12 +70,12 @@
         <el-col :span="8">
          <el-row>
             <span>酒店设施 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="assetsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in assets"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -83,12 +84,12 @@
         <el-col :span="8">
           <el-row>
             <span>酒店品牌 ：</span>
-             <el-select v-model="value3" multiple placeholder="请选择">
+             <el-select v-model="brandsValue" multiple placeholder="请选择">
               <el-option
-                v-for="item in options1"
-                :key="item.value2"
-                :label="item.label1"
-                :value="item.value2">
+                v-for="(item,index) in brands"
+                :key="index"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>          
           </el-row>
@@ -96,6 +97,88 @@
 
       </el-row>
     </div>
+
+    <!-- 酒店列表 -->
+    <div class="hotels">
+
+        <div class="hotels_item" v-for="(item,index) in hotelsList" :key="index">
+        <el-row>
+          <el-col :span="8">
+            <nuxt-link :to="`/hotel/${item.id}.html`">
+            <img :src="`${item.photos}`" :alt="`${item.name}`" style="width:310px;height:210px">
+            </nuxt-link>
+          </el-col>
+          <el-col :span="10">
+            <h3 style="font-size:24px;font-weight: normal;">
+              <nuxt-link :to="`/hotel/${item.id}.html`">{{item.name}}</nuxt-link>
+            </h3>
+            <span style="color:#9ea3b1">{{item.alias}}</span>&nbsp;
+            <span style="font-size:12px;color:#ff9900;font-weight:600">({{item.creation_time}})</span>&nbsp;
+            <!-- 星级 -->
+            <span v-if="item.hotellevel" :title="`${item.hotellevel.name}级`">
+                <i
+                  class="iconfont iconhuangguan"
+                  v-for="num in item.hotellevel.level"
+                  :key="num"
+                  style="color:#ff9900"
+                ></i>&nbsp;
+                <span style="color:#9ea3b1">{{item.hoteltype.name}}</span>
+              </span>
+             <div style="margin-top:15px;">
+                <el-col :span="10">
+                  <el-rate
+                    v-model="item.stars"
+                    disabled
+                    show-score
+                    text-color="#ff9900"
+                    score-template="{value}"
+                  ></el-rate>
+                </el-col>
+                <el-col :span="7">
+                  <span class="height-light" style="color: rgb(255, 153, 0);">{{item.all_remarks}}</span>
+                  条评价
+                </el-col>
+                <el-col :span="7">
+                  <span class="height-light" style="color: rgb(255, 153, 0);">{{item.visits_total}}</span>
+                  篇游记
+                </el-col>
+              </div>
+              <div class="location-row" style="margin-top:50px">
+                <i class="iconfont iconlocation icon_style" style="color:#00a6ff"></i>
+                <span style="color:#666"> 位于: {{item.address}}</span>
+              </div>
+          </el-col>
+          <el-col :span="6">
+            <a href="https://www.meituan.com/jiudian/4878340/">
+              <div v-for="(item,index) in item.products" :key="index" class="hotel_products">
+                  <span>{{item.name}}</span>
+                  <span class="hotel_price">
+                  <span style="color: #f90;font-size: larger;">￥{{item.price}}</span>起
+                  <i data-v-0a769ebc class="el-icon-arrow-right"></i>
+                  </span>
+              </div>
+            </a>
+          </el-col>
+        </el-row>
+        </div>
+
+    </div>
+
+    <!-- 分页 -->
+    <div style="margin-top:20px">
+      <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[3, 6, 9, 12]"
+      :page-size="3"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="18">
+    </el-pagination>
+    </div>
+
+    <!-- 加载 -->
+    
   </div>
 </template>
 
@@ -117,27 +200,18 @@ export default {
           label: '1500-2000'
         }, {
           value: '选项5',
-          label: '2000-3000'
+          label: '2000以上'
         }],
         value1: '',
 
-        options1: [{
-          value2: '选项1',
-          label1: '黄金糕'
-        }, {
-          value2: '选项2',
-          label1: '双皮奶'
-        }, {
-          value2: '选项3',
-          label1: '蚵仔煎'
-        }, {
-          value2: '选项4',
-          label1: '龙须面'
-        }, {
-          value2: '选项5',
-          label1: '北京烤鸭'
-        }],
-        value3: [],
+        assets:[],
+        assetsValue:[],
+        brands:[],
+        brandsValue:[],
+        levels:[],
+        levelsValue:[],
+        types:[],
+        typesValue:[],
 
          options2: [{
           value3: '选项1',
@@ -156,17 +230,49 @@ export default {
           label2: '医院'
         }],
         value4: [],
+        //酒店列表
+        hotelsList:[],
+
+        //分页
+        currentPage4: 4,
+        //加载
+      
       }
     },
      methods: {
-      
+       //切换页数
+       handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      }
+    
     },
-    mounted(){
-      this.$axios({
-        url:"/hotels/options"
-      }).then(res=>{
-        console.log(res,9999999)
-      })
+      async mounted(){
+        //获取酒店选项
+        const res = await this.$axios({
+            url:"/hotels/options"
+        })
+            console.log(res,9999999)
+            const {data} = res.data
+            this.assets = data.assets
+            this.brands = data.brands
+            this.levels = data.levels
+            this.types = data.types
+            
+        //获取酒店列表
+        const hotelList = await this.$axios({
+              url:"/hotels",
+              params:this.$route.query
+        })
+              console.log(hotelList,888888888888)
+              const data1 = hotelList.data.data
+              this.hotelsList = data1 
+              console.log(this.hotelsList,999999)
+
+
+
     }
 }
 </script>
@@ -180,6 +286,24 @@ export default {
             .fliter_top{
                 margin-bottom: 20px;
             }
+        }
+        .hotels{
+          
+          .hotels_item{
+            padding: 25px 0;
+            border-bottom: 1px solid #eeeeee;
+            .hotel_products{
+              padding: 20px 10px;
+              display: flex;
+              justify-content: space-between;
+              align-content: center;
+              border-bottom: 1px solid #eeeeee;
+              .hotel_price{
+                margin-right: 15px;
+                
+              }
+            }
+          }
         }      
     }
 </style>
