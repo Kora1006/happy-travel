@@ -4,7 +4,7 @@
       草稿箱
       <i class="el-icon-box"></i>
     </h3>
-    <p style="font-size:12px;color:#999;">共计{{postList.length}}篇</p>
+    <p style="font-size:12px;color:#999;">共计{{$store.state.post.postDraftList.length}}篇</p>
     <el-row
       type="flex"
       class="post-item"
