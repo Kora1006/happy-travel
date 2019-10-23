@@ -16,12 +16,14 @@
         <div class="info-left">
           <i class="el-icon-location-outline"></i>
           <span>{{postData.cityName}}</span> by
-          <img
-            :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
-            class="user-img"
-            onerror="this.src='/pic_sea.jpeg'"
-          />
-          <span style="color:#ffa500;">{{postData.account.nickname}}</span>
+          <nuxt-link to="/user/personal">
+            <img
+              :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
+              class="user-img"
+              onerror="this.src='/pic_sea.jpeg'"
+            />
+            <span style="color:#ffa500;">{{postData.account.nickname}}</span>
+          </nuxt-link>
           <i class="el-icon-view"></i>
           {{postData.watch?postData.watch:0}}
         </div>
@@ -43,15 +45,18 @@
           <div class="post-info">
             <div class="info-left">
               <i class="el-icon-location-outline"></i>
+
               <span>{{postData.cityName}}</span> by
-              <img
-               :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
-                class="user-img"
-                onerror="this.src='/static/avatar.jpg'"
-              />
-              <span style="color:#ffa500;">{{postData.account.nickname}}</span>
+              <nuxt-link to="/user/personal">
+                <img
+                  :src="$axios.defaults.baseURL+`${postData.account.defaultAvatar}`"
+                  class="user-img"
+                  onerror="this.src='/static/avatar.jpg'"
+                />
+                <span style="color:#ffa500;">{{postData.account.nickname}}</span>
+              </nuxt-link>
               <i class="el-icon-view"></i>
-             {{postData.watch?postData.watch:0}}
+              {{postData.watch?postData.watch:0}}
             </div>
             <span class="info-right">{{postData.like?postData.like:0}}赞</span>
           </div>
