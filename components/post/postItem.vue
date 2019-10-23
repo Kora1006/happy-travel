@@ -2,14 +2,14 @@
   <div class="content-wrap">
     <div class="content-item-3" v-if="postData.images && postData.images.length>1">
       <h3>{{postData.title}}</h3>
-      <div class="content">{{postData.summary}}</div>
+      <div class="content" v-html="postData.summary"></div>
       <el-row type="flex" justify="space-between" class="content-img-3">
         <img
           v-for="(item,index) in postData.images"
           :key="index"
           :src="item"
           onerror="this.src='/pic_sea.jpeg'"
-          v-if="index<=2"
+          v-show="index<=2"
         />
       </el-row>
       <div class="post-info">
@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="16">
           <h3>{{postData.title}}</h3>
-          <div class="content">{{postData.summary}}</div>
+          <div class="content" v-html="postData.summary"></div>
           <div class="post-info">
             <div class="info-left">
               <i class="el-icon-location-outline"></i>

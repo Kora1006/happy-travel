@@ -65,7 +65,7 @@ export default {
 <style lang="less" scoped>
 .menu-body {
   position: relative;
-  width: 640px;
+  // width: 640px;
 }
 .menu-item {
   display: flex;
@@ -83,7 +83,7 @@ export default {
   .menu-list {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 240px;
     z-index: 1;
     width: 400px;
     box-sizing: border-box;
@@ -103,6 +103,7 @@ export default {
 }
 .active {
   color: #ffa500;
+
 }
 .menu-recommand{
     width: 240px;

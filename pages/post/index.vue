@@ -11,7 +11,7 @@
         v-for="(item,index) in postDataList"
         :key="index"
         :postData="item"
-        v-if="postDataList"
+        v-show="postDataList"
       />
       <div class="tips" v-if="postDataList.length ==0">
         <i class="el-icon-warning-outline"></i>
@@ -62,14 +62,15 @@ export default {
         }
       }).then(res => {
         let { data } = res.data;
-        console.log(data)
+        console.log(data);
+
         this.postDataList = data;
       });
     },
     // 更换每页显示条数
     handleSizeChange(value) {
       this.pageSize = value;
-      this.pageIndex=1;
+      this.pageIndex = 1;
     },
     // 更换页码
     handleCurrentChange(value) {
@@ -91,18 +92,23 @@ export default {
   },
   computed: {
     changeData() {
-
       let start = (this.pageIndex - 1) * this.pageSize;
       let limit = this.pageSize;
       this.getPostData(start, limit);
-      return ;
+      return;
     }
   },
   watch: {
     $route() {
-      let start = (this.pageIndex - 1) * this.pageSize;
-      let limit = this.pageSize;
-      this.getPostData(start, limit);
+      this.$axios({
+        url: "/posts",
+        params: {
+          city: this.$route.query.city
+        }
+      }).then(res => {
+        this.total = res.data.total;
+        this.getPostData();
+      });
     }
   }
 };

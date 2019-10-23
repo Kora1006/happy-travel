@@ -8,9 +8,9 @@
     <el-row
       type="flex"
       class="post-item"
-      v-for="(item,index) in postList"
+      v-for="(item,index) in $store.state.post.postDraftList"
       :key="index"
-      v-if="postList.length"
+      v-show="$store.state.post.postDraftList.length"
     >
       <el-col :span="18">
         <div class="post-title" @click="handleEditPost(index)">
@@ -28,30 +28,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-      postList: []
-    };
-  },
+
   methods: {
-    //   获取草稿箱内容
-    getPostData() {
-      const posts = this.$store.state.post.postDraftList;
-      this.postList = posts;
-    },
+   
     // 移除文章
     handleRemove(index) {
       this.$store.commit("post/removePostData", index);
-      this.getPostData();
+
     },
     // 编辑草稿箱文档
     handleEditPost(index) {
- 
       this.$router.push('/post/create?index='+index)
     }
-  },
-  mounted() {
-    this.getPostData();
   },
   watch: {
     $store() {
