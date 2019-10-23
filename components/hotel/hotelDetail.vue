@@ -107,7 +107,7 @@
                           <span class="all">全部</span>&nbsp;&nbsp;
 
                             <span v-for="(item,index) in citys" :key="index" class="district-item">
-                              <a href="#" class="item-name">{{item.name}}</a>&nbsp;&nbsp;
+                              <a href="https://you.ctrip.com/place/Nanjing9.html" class="item-name">{{item.name}}</a>&nbsp;&nbsp;
                             </span>
                         </span>
                       </div>
@@ -262,7 +262,16 @@ export default {
       
         //查看价格
         getPrice(){
-            console.log(this.data)
+             //城市景点
+             
+            this.$axios({
+                url: "/cities?name=南京",
+            }).then( res=> {
+              console.log(res,6666666)
+              const {data} = res.data
+              // this.citys = data[0].scenics
+            })
+           
         },
 
         //选择人数
