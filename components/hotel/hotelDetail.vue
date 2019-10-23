@@ -155,7 +155,7 @@
                         <i class="iconfont iconhuangguan"></i>&nbsp;¥688
                       </span>
                       </el-col>
-                      <el-tooltip/>
+                      </el-tooltip>
                     </div>
                     
               </el-col>
