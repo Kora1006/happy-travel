@@ -163,6 +163,22 @@
         </div>
 
     </div>
+
+    <!-- 分页 -->
+    <div style="margin-top:20px">
+      <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[3, 6, 9, 12]"
+      :page-size="3"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="18">
+    </el-pagination>
+    </div>
+
+    <!-- 加载 -->
+    
   </div>
 </template>
 
@@ -216,10 +232,22 @@ export default {
         value4: [],
         //酒店列表
         hotelsList:[],
+
+        //分页
+        currentPage4: 4,
+        //加载
+      
       }
     },
      methods: {
-      
+       //切换页数
+       handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      }
+    
     },
       async mounted(){
         //获取酒店选项
