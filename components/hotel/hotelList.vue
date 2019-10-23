@@ -131,16 +131,7 @@ export default {
     
     },
       async mounted(){
-        //获取酒店选项
-        const res = await this.$axios({
-            url:"/hotels/options"
-        })
-            // console.log(res,9999999)
-            const {data} = res.data
-            this.assets = data.assets
-            this.brands = data.brands
-            this.levels = data.levels
-            this.types = data.types
+       
             
         //获取酒店列表
         const hotelList = await this.$axios({
