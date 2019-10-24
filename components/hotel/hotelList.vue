@@ -1,11 +1,10 @@
 <template>
   <div class="hotel_list">
     <!-- 条件筛选 -->
-    <HotelFilters/>
+    <HotelFilters @setHotelData="setHotelData"/>
 
     <!-- 酒店列表 -->
     <div class="hotels">
-
         <div class="hotels_item" v-for="(item,index) in dataList" :key="index">
         <el-row>
           <el-col :span="8">
@@ -82,7 +81,6 @@
         class="pagination"
       ></el-pagination>
     </div>
-    <!-- <div v-show="false">{{changeData}}</div> -->
 
     <!-- 加载 -->
     
@@ -119,28 +117,30 @@ export default {
         this.dataList = this.hotelsList.slice(0,this.pageSize) 
        
       },
-      handleCurrentChange(value) {
-        //修改当前页
-        this.pageIndex = value;
-        //修改酒店列表
-        this.dataList = this.hotelsList.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        )
-      }
+        handleCurrentChange(value) {
+          //修改当前页
+          this.pageIndex = value;
+          //修改酒店列表
+          this.dataList = this.hotelsList.slice(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageIndex * this.pageSize
+          )
+      },
+        //子组件传进来的筛选条件
+        setHotelData(arr){
+          this.hotelsList = arr
+          this.total =this.hotelsList.length
+          this.pageIndex = 1
+           //修改酒店列表
+          this.dataList = this.hotelsList.slice(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageIndex * this.pageSize
+          )
+        }
     
     },
       async mounted(){
-        //获取酒店选项
-        const res = await this.$axios({
-            url:"/hotels/options"
-        })
-            // console.log(res,9999999)
-            const {data} = res.data
-            this.assets = data.assets
-            this.brands = data.brands
-            this.levels = data.levels
-            this.types = data.types
+       
             
         //获取酒店列表
         const hotelList = await this.$axios({

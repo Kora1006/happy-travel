@@ -23,22 +23,6 @@ export default {
         HotelDetail,
         HotelList
     },
-    data() {
-        return {
-          
-        }
-        },
-    //请求酒店数据
-    mounted(){
-        this.$axios({
-            url:"/hotels",
-        }).then(res=>{
-           console.log(res)
-        })
-    },
-    methods:{
-        
-    }
 }
 </script>
 
