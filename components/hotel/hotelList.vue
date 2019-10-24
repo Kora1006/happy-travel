@@ -5,6 +5,8 @@
 
     <!-- 酒店列表 -->
     <div class="hotels">
+         <!-- 数据加载图片 -->
+        <img src="/loading.gif" alt="" v-if="dataList.length===0" class="loading">
         <div class="hotels_item" v-for="(item,index) in dataList" :key="index">
         <el-row>
           <el-col :span="8">
@@ -165,7 +167,10 @@ export default {
         margin-bottom: 20px;
         
         .hotels{
-          
+          .loading{
+            display: block;
+            margin: 0 auto;
+          }
           .hotels_item{
             padding: 25px 0;
             border-bottom: 1px solid #eeeeee;

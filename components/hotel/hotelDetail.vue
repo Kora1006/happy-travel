@@ -162,7 +162,11 @@
 
               <!-- 地图模块 -->
               <el-col :span="10">
-                  <div id="container"></div> 
+              <!-- 数据加载图片 -->
+              <img src="/loading.gif" alt="" v-if="citys.length===0" class="loading">
+              <div v-else>
+                  <div id="container"></div>
+              </div> 
               </el-col>
           </el-row>
         </div>
