@@ -182,7 +182,7 @@ export default {
               this.types = data.types
 
               const  res1 = await this.$axios({
-                  url:"/hotels"
+                  url:"/hotels?_limit=121"
               })
                   const hotelData = res1.data.data
                   this.hotelData = hotelData
