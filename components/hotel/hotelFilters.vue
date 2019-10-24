@@ -157,22 +157,15 @@ export default {
     },
 
       methods:{
-          searchFilter(){
-
-                console.log(+this.levelsValue[0],2222222222)              
-                console.log(this.hotelData,151515)
-                const arr = this.hotelData.filter(item => {
-                  
-
-                   console.log(item,8888888)
+          searchFilter(){              
+                const arr = this.hotelData.filter(item => {                  
                     if(item.hotellevel && Number(this.levelsValue[0]) <= Number(item.hotellevel.level)){
-                      console.log(585858)
                         return item
                     }
                 })
-                console.log(arr ,6161)
                 this.$emit("setHotelData",arr)
           },
+      
          
       },
 
