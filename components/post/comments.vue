@@ -30,7 +30,7 @@
           <el-upload
             name="files"
             :action="`${$axios.defaults.baseURL}/upload`"
-            :headers="header"
+          
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"

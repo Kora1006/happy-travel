@@ -82,7 +82,7 @@ export default {
   methods:{
     handleCurrentChange(value){
      
-      this.indexsize=value*this.indexnum
+      this.indexsize=(value-1)*this.indexnum
       const param = {
       post: this.id,
       _limit: this.indexnum,

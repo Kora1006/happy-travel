@@ -8,8 +8,7 @@
         <!-- 酒店列表组件 -->
         <div>
             <HotelList/>
-        </div>
-        
+        </div>       
     </div>
 </template>
 
@@ -23,6 +22,34 @@ export default {
         HotelDetail,
         HotelList
     },
+<<<<<<< HEAD
+    data() {
+        return {
+<<<<<<< HEAD
+          
+=======
+           
+>>>>>>> 847b7dfa57ee563d17847cbd5c146efb51aa5f16
+        }
+        },
+    //请求酒店数据
+    mounted(){
+        this.$axios({
+            url:"/hotels",
+        }).then(res=>{
+           console.log(res)
+        })
+    },
+    methods:{
+<<<<<<< HEAD
+        
+=======
+       
+    
+>>>>>>> 847b7dfa57ee563d17847cbd5c146efb51aa5f16
+    }
+=======
+>>>>>>> master
 }
 </script>
 
