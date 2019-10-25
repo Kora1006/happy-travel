@@ -104,7 +104,7 @@ export default {
     },
     // 选择搜索到的城市
     handleCitySelect(value) {
-      //   console.log(value);
+        console.log(value);
       this.form.city = value.value;
     },
     // 当输入框失去焦点时默认选取第一项

@@ -51,7 +51,7 @@
       <el-table-column prop="bestType" label="酒店房型" width="300" align="center"></el-table-column>
       <el-table-column prop="price" align="center" label="最低价格/每晚">
         <template slot-scope="scope">
-          <nuxt-link to="https://hotels.ctrip.com/hotel">
+          <nuxt-link to="/hotel">
             <span class="hotel-price">
               ￥{{scope.row.price}} 起
               <i class="el-icon-arrow-right"></i>
@@ -62,7 +62,33 @@
     </el-table>
 
     <!-- 地图 -->
-    <div class="map"></div>
+    <div class="map">
+      <!-- 地图盒子 -->
+      <div id="containermap"></div>
+      <!-- tab栏 -->
+      <el-tabs v-model="activeName" class="tabs" @tab-click="jiaotong">
+        <el-tab-pane label="风景" name="first">
+          <div>
+            <div
+              v-for="(item, i) in pois"
+              :key="i"
+              @mouseover="yiru(item.address,item.location)"
+              class="fj"
+            >{{item.address}}</div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="交通" name="second">
+          <div>
+            <div
+              v-for="(item, i) in poisnew"
+              :key="i"
+              @mouseover="yiru(item.address,item.location)"
+              class="jt"
+            >{{item.address}}</div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
 
     <!-- 酒店基本信息 -->
     <div class="hotel-info">
@@ -100,7 +126,7 @@
     </div>
 
     <!-- 用户评论 -->
-    <div class="guest-comment"> 
+    <div class="guest-comment">
       <h3>{{hotel.all_remarks?hotel.all_remarks:0}}条真实用户评论</h3>
       <el-row type="flex" justify="space-between">
         <el-col>
@@ -165,6 +191,8 @@
 export default {
   data() {
     return {
+      // tab栏默认首选项
+      activeName: "first",
       hotel: {
         scores: {},
         hotellevel: {},
@@ -175,7 +203,11 @@ export default {
         name: ""
       },
       // 存放图片列表
-      smallImg: []
+      smallImg: [],
+      // 风景数据
+      pois: [],
+      poisnew: [],
+      mapone: null
     };
   },
   async mounted() {
@@ -200,12 +232,89 @@ export default {
       }
     });
     console.log(this.hotel);
+    var url =
+      "http://webapi.amap.com/maps?v=1.4.15&key=05f359f2b60ac4be3c053048a846cfda&callback=onLoad";
+    var jsapi = document.createElement("script");
+    jsapi.charset = "utf-8";
+    jsapi.src = url;
+    document.head.appendChild(jsapi);
+    this.loadmap();
+    this.init("%E9%A3%8E%E6%99%AF%E5%90%8D%E8%83%9C");
   },
   methods: {
     // 切换大小图
     handleChangeImg(item) {
       this.bigImg = item;
       // console.log(this.bigImg);
+    },
+    fengjing() {},
+    loadmap() {},
+    jiaotong(a, b) {
+      console.log("a", a, "b", b.target.innerText);
+      if (b.target.innerText == "风景") {
+        this.init("%E9%A3%8E%E6%99%AF%E5%90%8D%E8%83%9C");
+      } else if (b.target.innerText == "交通") {
+        this.init("%E4%BA%A4%E9%80%9A%E8%AE%BE%E6%96%BD%E6%9C%8D%E5%8A%A1");
+      }
+    },
+    init(a) {
+      //初始化事件    这里调用风景的接口
+      this.$axios({
+        url: `https://restapi.amap.com/v3/place/text?keywords=&city=${this.hotel.city.name}&location=120.196716,30.224403&types=${a}&output=json&page=1&offset=10&key=79041dfa1c752f49599e2b507c64da42`,
+        method: "GET"
+      }).then(res => {
+        console.log("res", res.data.pois);
+        this.pois = res.data.pois;
+        this.pois.map((item, i) => {
+          this.pois[i].location = item.location.split(",");
+        });
+        this.poisnew = res.data.pois;
+        if (a == "%E4%BA%A4%E9%80%9A%E8%AE%BE%E6%96%BD%E6%9C%8D%E5%8A%A1") {
+          if (!Array.isArray(this.poisnew)) {
+            this.poisnew.map((item, i) => {
+              this.poisnew[i].location = item.location.split(",");
+            });
+          }
+          var prop = this.poisnew;
+        } else if (a == "%E9%A3%8E%E6%99%AF%E5%90%8D%E8%83%9C") {
+          var prop = this.pois;
+        }
+        // window.onLoad = function() {
+        this.mapone = new AMap.Map("containermap", {
+          zoom: 11, //级别
+          mapStyle: "amap://styles/macaron", //设置地图的显示样式
+          center: prop[0].location
+        });
+
+        var markerList = [];
+        prop.map(item => {
+          // 创建一个 Marker 实例：
+          var marker = new AMap.Marker({
+            position: item.location, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: item.address
+          });
+          markerList.push(marker);
+          // 将创建的点标记添加到已有的地图实例：
+          // // 移除已创建的 marker
+          // map.remove(marker);
+        });
+        this.mapone.add(markerList);
+      });
+
+      // var that = this
+      // var data = {type: a}
+
+      // 请求风景数据
+
+      //地图API异步加载
+
+      // };
+    },
+    yiru(a, b) {
+      //悬浮到风景列表的事件    a为名称   b为经纬度
+      // console.log("a", a);
+      // console.log("b", b);
+      this.mapone.setCenter(b);
     }
   }
 };
@@ -287,6 +396,27 @@ export default {
     }
   }
 }
+.map {
+  display: flex;
+  margin-top: 40px;
+
+  #containermap {
+    display: block;
+    width: 650px;
+    height: 360px;
+  }
+  .tabs {
+    width: 330px;
+    margin-left: 20px;
+
+    .fj {
+      margin: 8px 0;
+    }
+    .jt {
+      margin: 8px 0;
+    }
+  }
+}
 .hotel-info {
   margin-bottom: 30px;
   > div {
@@ -324,7 +454,7 @@ export default {
   color: #fa3;
   font-weight: 700;
 }
-.hotel-brand{
+.hotel-brand {
   padding: 5px 10px;
   background-color: #fa3;
   color: #fff;
