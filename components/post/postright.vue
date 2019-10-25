@@ -8,8 +8,9 @@
           <img :src="item.images[0]" alt />
           <div class="boxpost">
             <h4>{{item.title}}</h4>
-            <span>
-              <i>阅读:{{item.watch}}</i>
+            <span class="comment-tips">
+              {{timer}}
+              <i>阅读:{{item.watch?item.watch:0}}</i>
             </span>
           </div>
         </div>
@@ -19,10 +20,12 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      timer:moment().format('YYYY-MM-DD HH:mm')
     };
   },
   mounted() {
@@ -84,5 +87,9 @@ export default {
 }
 .aside-title{
   font-size: 18px !important;
+}
+.comment-tips{
+  font-size: 12px!important;
+  color: #999;
 }
 </style>

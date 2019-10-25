@@ -49,6 +49,7 @@
       <el-pagination background layout="prev, pager, next"     :total="total" 
       
       @current-change="handleCurrentChange"
+      class="fenye"
       ></el-pagination>
     </div>
     <div class="postright">
@@ -200,5 +201,9 @@ h1 {
   width: 100px;
   height: 100px;
   line-height: 100px;
+}
+.fenye{
+  margin-top: 20px;
+  text-align: center;
 }
 </style>
