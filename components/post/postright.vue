@@ -1,6 +1,6 @@
 <template>
   <div class="right">
-    <h4 class="aside-title" data-v-741ea8d8>相关攻略</h4>
+    <h4 class="aside-title">相关攻略</h4>
 
     <div class="box1" v-for="(item,index) in list" :key="index">
       <nuxt-link :to="`/post/detail?id=${item.id}`">
@@ -81,5 +81,8 @@ export default {
       }
     }
   }
+}
+.aside-title{
+  font-size: 18px !important;
 }
 </style>

@@ -242,6 +242,7 @@ export default {
 }
 .cmt-new:hover {
   a {
+    
     display: block;
   }
 }
