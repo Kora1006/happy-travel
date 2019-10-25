@@ -104,7 +104,7 @@ export default {
     },
     // 选择搜索到的城市
     handleCitySelect(value) {
-        console.log(value);
+      console.log(value);
       this.form.city = value.value;
     },
     // 当输入框失去焦点时默认选取第一项
@@ -130,24 +130,32 @@ export default {
     // 发布攻略
     onSubmit() {
       this.getPostContent();
-      
-      const {timer,...newPost}=this.form
 
-      this.$axios({
-        url: "/posts",
-        method: "POST",
-        data: newPost,
-        headers: {
-          // 这是jwt标准的token
-          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
-        }
-      }).then(res => {
-        if (res.status == 200) {
-          const { message } = res.data;
-          this.$message.success(message);
-          setTimeout(() => {
-            this.$router.push("/post");
-          }, 1500);
+      const { timer, ...newPost } = this.form;
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$axios({
+            url: "/posts",
+            method: "POST",
+            data: newPost,
+            headers: {
+              // 这是jwt标准的token
+              Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+            }
+          }).then(res => {
+            if (res.status == 200) {
+              const { message } = res.data;
+              this.$message.success(message);
+              setTimeout(() => {
+                this.$router.push("/post");
+              }, 1500);
+            }
+          });
+       
+      
+        } else {
+          this.$message.error("请完善所有内容后再提交哦");
+          return false;
         }
       });
     }
@@ -157,9 +165,12 @@ export default {
       if (this.$route.query) {
         const { index } = this.$route.query;
         const postList = this.$store.state.post.postDraftList;
-        this.form = {...postList[index]};
+        this.form = { ...postList[index] };
         // 将文章内容赋给富文本编辑器
-        this.$refs.vueEditor.editor.clipboard.dangerouslyPasteHTML(0,this.form.content)
+        this.$refs.vueEditor.editor.clipboard.dangerouslyPasteHTML(
+          0,
+          this.form.content
+        );
       }
     }
   }
@@ -178,7 +189,7 @@ export default {
     color: #999;
     margin-bottom: 10px;
   }
-  /deep/ .ql-editor{
+  /deep/ .ql-editor {
     height: 400px;
   }
 }
