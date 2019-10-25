@@ -157,12 +157,16 @@ export default {
     },
 
       methods:{
-          searchFilter(){              
-                const arr = this.hotelData.filter(item => {                  
+          searchFilter(){
+               console.log(this.levelsValue,69696969)
+                let arr = this.hotelData.filter(item => {                  
                     if(item.hotellevel && Number(this.levelsValue[0]) <= Number(item.hotellevel.level)){
                         return item
                     }
                 })
+                 if(!this.levelsValue[0]){
+                  arr=this.hotelData
+                }              
                 this.$emit("setHotelData",arr)
           },
       
