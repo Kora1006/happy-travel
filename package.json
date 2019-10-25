@@ -21,5 +21,11 @@
         "vue-word-editor": "0.0.3",
         "vuex-persistedstate": "^2.5.4"
     },
-    "devDependencies": {}
+    "devDependencies": {},
+    "config": {
+        "nuxt": {
+          "host": "0.0.0.0",
+          "port": 3000
+        }
+    }
 }

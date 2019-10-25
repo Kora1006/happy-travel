@@ -31,16 +31,16 @@
     <el-row type="flex" justify="space-between" style="margin-bottom:20px">
       <!-- 大图 -->
       <el-col :span="14" class="b-img">
-        <img :src="$axios.defaults.baseURL+bigImg.url" onerror="this.src='/pic_sea.jpeg'" />
+        <img :src="bigImg.url" onerror="this.src='/pic_sea.jpeg'" />
       </el-col>
       <!-- 小图 -->
       <el-col :span="8" class="s-img">
         <img
           v-for="(item,index) in smallImg"
           :key="index"
-          :src="$axios.defaults.baseURL+item.url"
+          :src="item.url"
           @click="handleChangeImg(item)"
-          onerror="this.src='/pic_sea.jpeg'"
+          :onerror="`this.src='/replace${index+1}.jpeg'`"
         />
       </el-col>
     </el-row>
@@ -72,9 +72,9 @@
             <div
               v-for="(item, i) in pois"
               :key="i"
-              @mouseover="yiru(item.address,item.location)"
+              @mouseover="yiru(item.name,item.location)"
               class="fj"
-            >{{item.address}}</div>
+            >{{item.name}}</div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="交通" name="second">
@@ -82,9 +82,9 @@
             <div
               v-for="(item, i) in poisnew"
               :key="i"
-              @mouseover="yiru(item.address,item.location)"
+              @mouseover="yiru(item.name,item.location)"
               class="jt"
-            >{{item.address}}</div>
+            >{{item.name}}</div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -203,7 +203,15 @@ export default {
         name: ""
       },
       // 存放图片列表
-      smallImg: [],
+      smallImg: [
+        {url:'/replace1.jpeg'},
+        {url:'/replace2.jpeg'},
+        {url:'/replace3.jpeg'},
+        {url:'/replace4.jpeg'},
+        {url:'/replace5.jpeg'},
+        {url:'/replace6.jpeg'}
+
+       ],
       // 风景数据
       pois: [],
       poisnew: [],
@@ -218,7 +226,7 @@ export default {
       url: "/hotels?id=" + hid
     });
     this.hotel = res.data.data[0];
-    this.smallImg = [...res.data.data[0].pics];
+    // this.smallImg = [...res.data.data[0].pics];
     this.bigImg = { ...this.smallImg[0] };
     // 修复无level
     if (!this.hotel.hotellevel) {

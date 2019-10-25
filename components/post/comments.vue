@@ -246,4 +246,7 @@ export default {
     display: block;
   }
 }
+.cmt-title{
+  margin-bottom: 10px;
+}
 </style>
