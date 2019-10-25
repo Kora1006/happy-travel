@@ -189,7 +189,7 @@ export default {
        
         //获取酒店列表
         const hotelList = await this.$axios({
-            url: "/hotels",
+            url: "/hotels?_limit=121",
             params: this.$route.query
         });
         // console.log(hotelList,888888888888)
