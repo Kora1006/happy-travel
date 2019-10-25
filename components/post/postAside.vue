@@ -75,15 +75,17 @@ export default {
   .menu-name {
     display: flex;
     justify-content: space-between;
+     z-index: 2;
     width: 240px;
     box-sizing: border-box;
     padding: 10px;
     border: 1px solid #eee;
   }
+  
   .menu-list {
     position: absolute;
     top: 0;
-    left: 240px;
+    left: 239px;
     z-index: 1;
     width: 400px;
     box-sizing: border-box;
@@ -101,6 +103,9 @@ export default {
     }
   }
 }
+.menu-item:hover .menu-name{
+     border-right: 2px solid #fff;
+   }
 .active {
   color: #ffa500;
 

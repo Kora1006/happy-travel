@@ -10,7 +10,7 @@
             <div class="hotels_item" v-for="(item,index) in dataList" :key="index">
                 <el-row>
                     <el-col :span="8">
-                        <nuxt-link :to="`/hotel/detail?id=${item.id}`">
+                        <nuxt-link :to="`/hotel/${item.id}`">
                             <img
                                 :src="`${item.photos}`"
                                 :alt="`${item.name}`"
